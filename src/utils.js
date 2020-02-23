@@ -19,5 +19,5 @@ module.exports.shuffle = (someArray) => {
 module.exports.getRandomDate = () => {
   const date = new Date();
   const startDate = date.setMonth(date.getMonth() - 3);
-  return new Date(startDate.getTime() + Math.random() * (new Date().getTime() - startDate.getTime()));
+  return new Date(startDate + Math.random() * (new Date().getTime() - startDate));
 };

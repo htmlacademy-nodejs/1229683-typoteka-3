@@ -1,6 +1,6 @@
 'use strict';
 
-const packageFileJson = require(`../../package-lock.json`);
+const packageFileJson = require(`../../../package-lock.json`);
 
 module.exports = {
   name: `--version`,
@@ -8,4 +8,4 @@ module.exports = {
     const version = packageFileJson.version;
     console.info(version);
   }
-}
+};
