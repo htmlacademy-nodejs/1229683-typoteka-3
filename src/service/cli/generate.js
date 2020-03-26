@@ -1,14 +1,15 @@
 'use strict';
 
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
 const dayjs = require(`dayjs`);
+const chalk = require(`chalk`);
 
 const {
   getRandomInt,
   getRandomDate,
   shuffle,
 } = require(`../../utils`);
-const {ExitCode} = require(`../../constants`);
+const {ExitCode, MAX_MESSAGE_COUNT} = require(`../../constants`);
 
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
@@ -87,23 +88,21 @@ const generateOffers = (count) => (
 
 module.exports = {
   name: `--generate`,
-  run(args) {
+  async run(args) {
     const [count] = args;
     const countOffer = Number(parseInt(count, 10)) || DEFAULT_COUNT;
     const content = JSON.stringify(generateOffers(countOffer));
 
-    if (count > 1000) {
-      console.info(`Не больше 1000 объявлений`);
+    if (count > MAX_MESSAGE_COUNT) {
+      console.error(chalk.red(`Не больше ${MAX_MESSAGE_COUNT} объявлений`));
       process.exit(ExitCode.error);
     }
-
-    fs.writeFile(FILE_NAME, content, (err) => {
-      if (err) {
-        return console.error(`Can't write data to file...`);
-      }
-
-      return console.info(`Operation success. File created.`);
-    });
+    try {
+      await fs.writeFile(FILE_NAME, content);
+      console.info(chalk.green(`Operation success. File created.`));
+    } catch (err) {
+      console.error(chalk.red(`Can't write data to file...`));
+    }
   }
 };
 
