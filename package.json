@@ -5,6 +5,7 @@
   "main": "./src/service/service.js",
   "scripts": {
     "start": "node ./src/service/service.js",
+    "start-front-server": "nodemon ./src/express/index.js",
     "test": "npm run eslint",
     "eslint": "eslint --ext .js src/"
   },
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "chalk": "3.0.0",
-    "dayjs": "1.8.20"
+    "dayjs": "1.8.20",
+    "express": "4.17.1"
   }
 }
