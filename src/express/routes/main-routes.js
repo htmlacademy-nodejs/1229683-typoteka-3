@@ -9,6 +9,6 @@ mainRouter.get(`/login`, (req, res) => res.render(`login`));
 mainRouter.get(`/search`, (req, res) => res.render(`search`, {
   admin: true
 }));
-mainRouter.get(`/categories`, (req, res) => res.render(`articles-by-category`));
+mainRouter.get(`/categories`, (req, res) => res.render(`all-categories`, {admin: true}));
 
 module.exports = mainRouter;
