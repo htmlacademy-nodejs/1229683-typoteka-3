@@ -27,6 +27,7 @@
   "dependencies": {
     "chalk": "3.0.0",
     "dayjs": "1.8.20",
-    "express": "4.17.1"
+    "express": "4.17.1",
+    "pug": "2.0.4"
   }
 }
