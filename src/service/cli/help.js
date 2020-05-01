@@ -8,7 +8,8 @@ server &lt;command&gt;
 Команды:
 --version:            выводит номер версии
 --help:               печатает этот текст
---generate &lt;count&gt;    формирует файл mocks.json`;
+--generate &lt;count&gt;    формирует файл mocks.json
+--server &lt;count&gt;    запускает сервер`;
 
 module.exports = {
   name: `--help`,
