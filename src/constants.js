@@ -21,3 +21,8 @@ module.exports.MAX_ID_LENGTH = 6;
 module.exports.MAX_COMMENTS = 4;
 
 module.exports.API_PREFIX = `/api`;
+
+module.exports.Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
+};
