@@ -7,6 +7,8 @@
     "start": "nodemon ./src/service/service.js --server",
     "start-front-server": "nodemon ./src/express/index.js",
     "test": "npm run eslint",
+    "test::rest": "npm run jest",
+    "jest": "jest",
     "eslint": "eslint --ext .js src/"
   },
   "repository": {
@@ -22,8 +24,10 @@
   "devDependencies": {
     "eslint": "6.8.0",
     "eslint-config-htmlacademy": "0.5.2",
+    "jest": "26.5.2",
     "nanoid": "3.1.12",
-    "nodemon": "2.0.2"
+    "nodemon": "2.0.2",
+    "supertest": "5.0.0"
   },
   "dependencies": {
     "chalk": "3.0.0",
