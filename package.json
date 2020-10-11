@@ -8,7 +8,7 @@
     "start-front-server": "nodemon ./src/express/index.js",
     "test::rest": "npm run jest",
     "jest": "jest",
-    "eslint": "eslint --ext .js src/"
+    "eslint": "eslint --ext .js src/ --fix"
   },
   "repository": {
     "type": "git",

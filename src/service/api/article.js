@@ -1,7 +1,7 @@
 "use strict";
 
-const { Router } = require(`express`);
-const { HttpCode } = require(`../../constants`);
+const {Router} = require(`express`);
+const {HttpCode} = require(`../../constants`);
 const articleValidator = require(`../middlewares/article-validator`);
 const articleExists = require(`../middlewares/article-exists`);
 const commentValidator = require(`../middlewares/comment-validator`);
@@ -22,7 +22,7 @@ module.exports = (app, articleService, commentService) => {
   });
 
   route.get(`/:articleId`, (req, res) => {
-    const { articleId } = req.params;
+    const {articleId} = req.params;
     const article = articleService.findOne(articleId);
 
     if (!article) {
@@ -33,7 +33,7 @@ module.exports = (app, articleService, commentService) => {
   });
 
   route.delete(`/:articleId`, (req, res) => {
-    const { articleId } = req.params;
+    const {articleId} = req.params;
     const article = articleService.drop(articleId);
 
     if (!article) {
@@ -44,7 +44,7 @@ module.exports = (app, articleService, commentService) => {
   });
 
   route.put(`/:articleId`, articleValidator, (req, res) => {
-    const { articleId } = req.params;
+    const {articleId} = req.params;
     const existArticle = articleService.findOne(articleId);
 
     if (!existArticle) {
@@ -60,7 +60,7 @@ module.exports = (app, articleService, commentService) => {
       `/:articleId/comments`,
       articleExists(articleService),
       (req, res) => {
-        const { article } = res.locals;
+        const {article} = res.locals;
         const comments = commentService.findAll(article);
 
         res.status(HttpCode.OK).send(comments);
@@ -71,8 +71,8 @@ module.exports = (app, articleService, commentService) => {
       `/:articleId/comments/:commentId`,
       articleExists(articleService),
       (req, res) => {
-        const { commentId } = req.params;
-        const { article } = res.locals;
+        const {commentId} = req.params;
+        const {article} = res.locals;
         const deletedComment = commentService.drop(article, commentId);
 
         if (!deletedComment) {
@@ -87,7 +87,7 @@ module.exports = (app, articleService, commentService) => {
       `/:articleId/comments`,
       [articleExists(articleService), commentValidator],
       (req, res) => {
-        const { article } = res.locals;
+        const {article} = res.locals;
         const comment = commentService.create(article, req.body);
 
         return res.status(HttpCode.CREATED).send(comment);

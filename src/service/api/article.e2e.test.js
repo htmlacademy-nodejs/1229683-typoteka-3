@@ -7,7 +7,7 @@ const artilce = require(`./article`);
 const DataService = require(`../data-service/article`);
 const CommentService = require(`../data-service/comment`);
 
-const { HttpCode } = require(`../../constants`);
+const {HttpCode} = require(`../../constants`);
 
 const mockData = [
   {
@@ -22,8 +22,8 @@ const mockData = [
         id: `pcyUzx`,
         text: `Хочу такую же футболку :-) Плюсую, но слишком много буквы!`,
       },
-      { id: `JhnPDQ`, text: `Планируете записать видосик на эту тему?` },
-      { id: `h12MzI`, text: `Это где ж такие красоты?` },
+      {id: `JhnPDQ`, text: `Планируете записать видосик на эту тему?`},
+      {id: `h12MzI`, text: `Это где ж такие красоты?`},
     ],
   },
   {
@@ -127,7 +127,7 @@ describe(`API refuses to create an article if data is invalid`, () => {
 
   test(`Without any required property response code is 400`, async () => {
     for (const key of Object.keys(newArticle)) {
-      const badArticle = { ...newArticle };
+      const badArticle = {...newArticle};
       delete badArticle[key];
       await request(app)
         .post(`/articles`)
