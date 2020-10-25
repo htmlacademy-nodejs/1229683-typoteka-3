@@ -1,0 +1,8 @@
+each article in articles
+  ul.notes__list
+      li.notes__list-item
+      time.notes__item-time(datetime=article.createdDate) #{article.createdDate}
+      a.notes__item-text(href="#")
+        | #{article.announce}
+      button.notes__button.button.button--close-item(type="button")
+        span.visually-hidden Закрыть строку списка
