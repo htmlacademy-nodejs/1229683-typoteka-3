@@ -196,6 +196,39 @@ test(`API returns status code 400 when trying to change an article with invalid 
 });
 
 
+describe(`API correctly deletes an article`, () => {
+
+  const app = createAPI();
+
+  let response;
+
+  beforeAll(async () => {
+    response = await request(app)
+      .delete(`/articles/J-dT51`);
+  });
+
+  test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
+
+  test(`Returns deleted article`, () => expect(response.body.id).toBe(`J-dT51`));
+
+  test(`Article count is 1 now`, () => request(app)
+    .get(`/articles`)
+    .expect((res) => expect(res.body.length).toBe(1))
+  );
+
+});
+
+test(`API refuses to delete non-existent offer`, () => {
+
+  const app = createAPI();
+
+  return request(app)
+    .delete(`/articles/NOEXST`)
+    .expect(HttpCode.NOT_FOUND);
+
+});
+
+
 test(`API refuses to create a comment to non-existent article and returns status code 404`, () => {
 
   const app = createAPI();
