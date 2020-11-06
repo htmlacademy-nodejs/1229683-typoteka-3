@@ -15,12 +15,10 @@ mainRouter.get(`/search`, async (req, res) =>{
   try {
     const {search} = req.query;
     const results = await api.search(search);
-    console.log(results);
 
     res.render(`search-results`, {results});
 
   } catch (err) {
-    console.log(err)
     res.render(`search`, {
       results: []
     });

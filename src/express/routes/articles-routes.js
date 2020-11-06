@@ -18,42 +18,43 @@ const storage = multer.diskStorage({
     const uniqueName = nanoid(10);
     const extension = file.originalname.split(`.`).pop();
     cb(null, `${uniqueName}.${extension}`);
-  }
+  },
 });
 
 const upload = multer({storage});
 
 articlesRouter.get(`/category/:id`, (req, res) =>
-  res.send(`/articles/category/:id`)
+  res.send(`articles-by-category`)
 );
 articlesRouter.get(`/add`, (req, res) => res.render(`add-article`));
 articlesRouter.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
   const [article, categories] = await Promise.all([
     api.getArticle(id),
-    api.getCategories()
+    api.getCategories(),
   ]);
   res.render(`edit-article`, {article, categories});
 });
-articlesRouter.get(`/:id`, (req, res) => res.send(`/articles/:id`));
-articlesRouter.post(`/add`, upload.single(`picture`),
-    async (req, res) => {
-      const {body, file} = req;
-      console.log(body);
-      const articleData = {
-        picture: file.filename,
-        title: body.title,
-        announce: body.announce,
-        fullText: body.fullText,
-        category: body.category,
-      };
-      try {
-        await api.post(`/articles`, articleData);
-        res.redirect(`/my`);
-      } catch (e) {
-        res.redirect(`back`);
-      }
-    });
-
+articlesRouter.get(`/:id`, async (req, res) => {
+  const {id} = req.params;
+  const article = await api.getArticle(id);
+  res.render(`article`, {article});
+});
+articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
+  const {body, file} = req;
+  const articleData = {
+    picture: file.filename,
+    title: body.title,
+    announce: body.announce,
+    fullText: body.fullText,
+    category: body.category,
+  };
+  try {
+    await api.createArticle(articleData);
+    res.redirect(`/my`);
+  } catch (e) {
+    res.redirect(`back`);
+  }
+});
 
 module.exports = articlesRouter;

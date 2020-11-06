@@ -46,7 +46,7 @@ class API {
   }
 
   async createArticle(data) {
-    return this._load(`/articles/add`, {
+    return this._load(`/articles`, {
       method: `POST`,
       data,
     });
