@@ -1,0 +1,11 @@
+- var news = [{name: 'Билл Гейтс впервые за два года возглавил рейтинг самых богатых людей мира по версии Bloomberg', quantity: 12}, {name: 'Сервис для аналитики Telegram-чатов Combot попал под блокировку из-за информации на служебной', quantity: 15}, {name: 'Модель Кайли Дженнер продаст 51% своей компании Kylie Cosmetics владельцу Factor за $600 млн', quantity: 52}, {name: 'Tesla получила 146 тысяч предзаказов на электрический пикап Cybertruck за двое суток', quantity: 153}]
+section.main-page__hot.hot
+  h2.hot__name
+      | Самое обсуждаемое&nbsp;
+      span.hot__icon.hot__icon--fire
+  ul.hot__list
+    each item in news
+      li.hot__list-item
+      a.hot__list-link(href='#')
+          | #{item.name}&nbsp;
+          sup.hot__link-sup=item.quantity

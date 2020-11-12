@@ -4,7 +4,7 @@
   "description": "«Куплю. Продам»",
   "main": "./src/service/service.js",
   "scripts": {
-    "start": "node ./src/service/service.js",
+    "start": "nodemon ./src/service/service.js --server",
     "start-front-server": "nodemon ./src/express/index.js",
     "test": "npm run eslint",
     "eslint": "eslint --ext .js src/"
@@ -22,12 +22,16 @@
   "devDependencies": {
     "eslint": "6.8.0",
     "eslint-config-htmlacademy": "0.5.2",
+    "nanoid": "3.1.12",
     "nodemon": "2.0.2"
   },
   "dependencies": {
     "chalk": "3.0.0",
     "dayjs": "1.8.20",
+    "encodeurl": "1.0.2",
     "express": "4.17.1",
-    "pug": "2.0.4"
+    "nanoid": "3.1.7",
+    "pug": "2.0.4",
+    "react": "16.13.1"
   }
 }
