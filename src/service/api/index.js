@@ -1,6 +1,6 @@
 "use strict";
 
-const { Router } = require(`express`);
+const {Router} = require(`express`);
 const categories = require(`../api/categories`);
 const search = require(`../api/search`);
 const article = require(`../api/article`);
