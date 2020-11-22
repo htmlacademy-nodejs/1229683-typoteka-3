@@ -7,6 +7,7 @@ const {nanoid} = require(`nanoid`);
 const api = require(`../api`).getAPI();
 
 const articlesRouter = new Router();
+const {themesList} = require(`./mocks.js`);
 
 const UPLOAD_DIR = `../upload/img/`;
 
@@ -24,8 +25,9 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 articlesRouter.get(`/category/:id`, (req, res) =>
-  res.send(`articles-by-category`)
+  res.render(`articles-by-category`, {themesList})
 );
+
 articlesRouter.get(`/add`, (req, res) => res.render(`add-article`));
 articlesRouter.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
