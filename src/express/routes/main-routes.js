@@ -1,15 +1,29 @@
-'use strict';
+"use strict";
 
 const {Router} = require(`express`);
-const mainRouter = new Router();
-const {news, themesList, latestComments} = require(`./mocks.js`);
+const api = require(`../api`).getAPI();
 
-mainRouter.get(`/`, (req, res) => res.render(`main`, {news, themesList, latestComments}));
+const mainRouter = new Router();
+const {themesList, latestComments} = require(`./mocks.js`);
+
+mainRouter.get(`/`, async (req, res) => {
+  const news = await api.getArticles();
+  res.render(`main`, {news, themesList, latestComments});
+});
 mainRouter.get(`/register`, (req, res) => res.render(`sign-up`));
 mainRouter.get(`/login`, (req, res) => res.render(`login`));
-mainRouter.get(`/search`, (req, res) => res.render(`search`, {
-  admin: true
-}));
-mainRouter.get(`/categories`, (req, res) => res.render(`all-categories`, {admin: true}));
+mainRouter.get(`/search`, async (req, res) => {
+  try {
+    const {search} = req.query;
+    const results = await api.search(search);
+
+    res.render(`search-results`, {results});
+  } catch (err) {
+    res.render(`search`, {
+      results: [],
+    });
+  }
+});
+mainRouter.get(`/categories`, (req, res) => res.render(`articles-by-category`));
 
 module.exports = mainRouter;
