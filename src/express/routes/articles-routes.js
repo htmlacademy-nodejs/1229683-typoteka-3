@@ -9,7 +9,7 @@ const api = require(`../api`).getAPI();
 const articlesRouter = new Router();
 const {themesList} = require(`./mocks.js`);
 
-const UPLOAD_DIR = `../upload/img/`;
+const UPLOAD_DIR = `../../../upload/img/`;
 
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
