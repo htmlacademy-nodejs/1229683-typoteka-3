@@ -9,7 +9,8 @@ server &lt;command&gt;
 --version:            выводит номер версии
 --help:               печатает этот текст
 --generate &lt;count&gt;    формирует файл mocks.json
---server &lt;count&gt;    запускает сервер`;
+--server &lt;count&gt;    запускает сервер
+--fill:                   создает файл для заполнения БД`;
 
 module.exports = {
   name: `--help`,
