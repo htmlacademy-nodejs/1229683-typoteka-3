@@ -39,8 +39,6 @@ CREATE TABLE articles
   full_text TEXT NOT NULL,
   picture VARCHAR(50) NOT NULL,
   created_date TIMESTAMP DEFAULT current_timestamp,
-  user_id INTEGER NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE comments
