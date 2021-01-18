@@ -8,7 +8,8 @@ const logger = getLogger({name: `api`});
 const TIMEOUT = 1000;
 
 const port = process.env.API_PORT || 3000;
-const defaultUrl = `http://localhost:${port}/api`;
+const PUBLIC_URL = process.env.PUBLIC_URL;
+const API_URL = `${PUBLIC_URL}/${port}/api`;
 
 class API {
   constructor(baseUrl, timeout) {
@@ -20,7 +21,7 @@ class API {
   async _load(url, options) {
     try {
       const response = await this._http.request({
-        url: `${defaultUrl}${url}`,
+        url: `${API_URL}${url}`,
         ...options,
       });
       return response.data;
@@ -53,7 +54,7 @@ class API {
   }
 }
 
-const defaultAPI = new API(defaultUrl, TIMEOUT);
+const defaultAPI = new API(API_URL, TIMEOUT);
 
 module.exports = {
   API,
