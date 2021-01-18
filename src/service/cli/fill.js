@@ -11,7 +11,7 @@ const {getRandomInt, shuffle} = require(`../../utils`);
 const {MAX_COMMENTS} = require(`../../constants`);
 
 const DEFAULT_COUNT = 1;
-const FILE_NAME = `fill-db.json`;
+const FILE_NAME = `fill-db.sql`;
 
 const readContent = async (filePath) => {
   try {
