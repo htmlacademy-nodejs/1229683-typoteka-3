@@ -39,6 +39,8 @@ CREATE TABLE articles
   full_text TEXT NOT NULL,
   picture VARCHAR(50) NOT NULL,
   created_date TIMESTAMP DEFAULT current_timestamp,
+  user_id INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE comments
@@ -65,5 +67,5 @@ CREATE TABLE articles_categories
     ON UPDATE CASCADE
 );
 
--- не работает
-CREATE INDEX ON TABLE articles(title);
+
+CREATE INDEX ON articles(title);
