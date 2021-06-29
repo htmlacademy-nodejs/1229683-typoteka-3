@@ -9,7 +9,7 @@ const TIMEOUT = 1000;
 
 const port = process.env.API_PORT || 3000;
 const PUBLIC_URL = process.env.PUBLIC_URL;
-const API_URL = `${PUBLIC_URL}/${port}/api`;
+const API_URL = `${PUBLIC_URL}:${port}/api`;
 
 class API {
   constructor(baseUrl, timeout) {
