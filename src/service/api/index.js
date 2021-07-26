@@ -14,6 +14,10 @@ const {
   CommentService,
 } = require(`../data-service`);
 
+const sequelize = require(`../lib/sequelize`);
+const defineModels = require(`../models`);
+defineModels(sequelize);
+
 const app = new Router();
 
 (async () => {
