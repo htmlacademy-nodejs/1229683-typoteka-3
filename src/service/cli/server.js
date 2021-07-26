@@ -22,6 +22,7 @@ app.use((req, res) => {
 });
 
 app.use((err, _req, _res, _next) => {
+  console.log(err.message);
   logger.error(`An error occured on processing request: ${err.message}`);
 });
 
@@ -41,24 +42,27 @@ module.exports = {
 
     try {
       logger.info(`Trying to connect to database`);
+
       await sequelize.authenticate();
     } catch (err) {
-      logger.error(`An error occured: ${err.massage}`);
+      console.log(err.message);
+      logger.error(`An error occured: ${err.message}`);
       process.exit(1);
     }
 
     try {
       app.listen(port, (err) => {
         if (err) {
-          return logger.error(`An error occured on server creation: ${err.message}`);
+          return logger.error(
+              `An error occured on server creation: ${err.message}`
+          );
         }
-
+        console.log(`Listening to connections on ${port}`);
         return logger.info(`Listening to connections on ${port}`);
       });
-
     } catch (err) {
       logger.error(`An error occured: ${err.message}`);
       process.exit(1);
     }
-  }
+  },
 };
