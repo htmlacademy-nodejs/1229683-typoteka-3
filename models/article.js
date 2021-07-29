@@ -7,11 +7,11 @@ module.exports = (sequelize, DataTypes) => {
   class Article extends Model {
 
     static associate(models) {
-      Article.hasMany(models.Comment, {
+      Article.hasMany(models.comment, {
         foreignKey: `commentId`,
       });
-      Article.belongsToMany(models.Category, {through: `ArticlesCategories`});
-      Article.belongsTo(models.User, {foreignKey: `userId`});
+      Article.belongsToMany(models.category, {through: `articlesCategories`});
+      Article.belongsTo(models.user, {foreignKey: `userId`});
     }
   }
   Article.init({
@@ -39,9 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: `Article`,
-    timestamps: true,
-    paranoid: true,
+    modelName: `article`,
   });
   return Article;
 };
