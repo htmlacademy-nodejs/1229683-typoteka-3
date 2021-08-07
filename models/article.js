@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       Article.hasMany(models.comment, {
-        foreignKey: `commentId`,
+        foreignKey: `articleId`,
       });
       Article.belongsToMany(models.category, {through: `articlesCategories`});
       Article.belongsTo(models.user, {foreignKey: `userId`});
