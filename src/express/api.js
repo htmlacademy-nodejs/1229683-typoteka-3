@@ -30,8 +30,8 @@ class API {
     }
   }
 
-  getArticles() {
-    return this._load(`/articles`);
+  getArticles({isNeedComments}) {
+    return this._load(`/articles`, {params: {isNeedComments}});
   }
 
   getArticle(id) {

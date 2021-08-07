@@ -7,7 +7,7 @@ const mainRouter = new Router();
 const {themesList, latestComments} = require(`./mocks.js`);
 
 mainRouter.get(`/`, async (req, res) => {
-  const articles = await api.getArticles();
+  const articles = await api.getArticles({isNeedComments: true});
   res.render(`main`, {news: articles, articles, themesList, latestComments});
 });
 mainRouter.get(`/register`, (req, res) => res.render(`sign-up`));
