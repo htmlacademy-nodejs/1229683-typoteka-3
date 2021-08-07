@@ -1,9 +1,16 @@
 "use strict";
 
 module.exports = {
-  up: (queryInterface) => {
+  up: (queryInterface, Sequelize) => {
     // Product belongsToMany Tag
-    return queryInterface.createTable(`articlesCategories`);
+    return queryInterface.createTable(`articlesCategories`, {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+    });
   },
 
   down: (queryInterface) => {

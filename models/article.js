@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       Article.hasMany(models.comment, {
         foreignKey: `articleId`,
       });
-      Article.belongsToMany(models.category, {through: `articlesCategories`});
+      Article.belongsToMany(models.category, {through: models.articlesCategories});
+      Article.hasMany(models.articlesCategories);
       Article.belongsTo(models.user, {foreignKey: `userId`});
     }
   }

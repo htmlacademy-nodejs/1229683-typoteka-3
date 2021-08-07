@@ -2,13 +2,22 @@
 const {
   Model
 } = require(`sequelize`);
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   class ArticleCategory extends Model {
-    static associate() {
+    static associate(models) {
+      ArticleCategory.belongsTo(models.article);
+      ArticleCategory.belongsTo(models.category);
 
     }
   }
-  ArticleCategory.init({}, {
+  ArticleCategory.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
+    }
+  }, {
     sequelize,
     modelName: `articlesCategories`,
     timestamps: false,
