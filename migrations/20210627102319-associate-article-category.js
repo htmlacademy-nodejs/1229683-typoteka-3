@@ -1,21 +1,9 @@
-'use strict';
+"use strict";
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: (queryInterface) => {
     // Product belongsToMany Tag
-    return queryInterface.createTable(
-        `articlesCategories`,
-        {
-          articleId: {
-            type: Sequelize.INTEGER,
-            primaryKey: true,
-          },
-          categoryId: {
-            type: Sequelize.INTEGER,
-            primaryKey: true,
-          },
-        }
-    );
+    return queryInterface.createTable(`articlesCategories`);
   },
 
   down: (queryInterface) => {
