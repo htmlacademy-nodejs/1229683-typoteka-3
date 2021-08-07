@@ -4,7 +4,7 @@ section.main-page__list.preview
     each article in articles
       li.preview__item
         ul.preview__breadcrumbs
-          each theme in article.category
+          each theme in article.categories
             li.preview__breadcrumbs-item
               a.preview__breadcrumbs-link(href='#') #{theme}
         .preview__background
@@ -19,4 +19,3 @@ section.main-page__list.preview
           span.preview__cloud
           b.preview__comment-count
           |&nbsp;#{article.comments.length}
-      
