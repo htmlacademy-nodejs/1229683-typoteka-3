@@ -1,0 +1,25 @@
+version: "3"
+services:
+  # redis:
+  #   image: redis
+  #   command: redis-server /usr/local/etc/redis/redis.conf
+  #   volumes:
+  #     - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
+  #   ports:
+  #     - "6379:6379"
+  postgres:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=academy
+      - POSTGRES_DB=typoteka
+      - POSTGRES_USER=postgres
+    ports:
+      - "5432:5432"
+
+volumes:
+  dbdata:
+    driver: local

@@ -4,11 +4,14 @@ const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
 
 const mainRouter = new Router();
-const {themesList, latestComments} = require(`./mocks.js`);
+const {latestComments} = require(`./mocks.js`);
 
 mainRouter.get(`/`, async (req, res) => {
-  const news = await api.getArticles();
-  res.render(`main`, {news, themesList, latestComments});
+  const [articles, categories] = await Promise.all([
+    api.getArticles({isNeedComments: true}),
+    api.getCategories(true)
+  ]);
+  res.render(`main`, {news: articles, articles, themesList: categories, latestComments});
 });
 mainRouter.get(`/register`, (req, res) => res.render(`sign-up`));
 mainRouter.get(`/login`, (req, res) => res.render(`login`));
