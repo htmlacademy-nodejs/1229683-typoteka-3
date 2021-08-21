@@ -9,7 +9,7 @@ const TIMEOUT = 1000;
 
 const port = process.env.API_PORT || 3000;
 const PUBLIC_URL = process.env.PUBLIC_URL;
-const API_URL = `${PUBLIC_URL}/${port}/api`;
+const API_URL = `${PUBLIC_URL}:${port}/api`;
 
 class API {
   constructor(baseUrl, timeout) {
@@ -30,8 +30,8 @@ class API {
     }
   }
 
-  getArticles() {
-    return this._load(`/articles`);
+  getArticles({isNeedComments}) {
+    return this._load(`/articles`, {params: {isNeedComments}});
   }
 
   getArticle(id) {
@@ -42,8 +42,8 @@ class API {
     return this._load(`/search`, {params: {query}});
   }
 
-  async getCategories() {
-    return this._load(`/categories`);
+  async getCategories(count) {
+    return this._load(`/categories`, {params: {count}});
   }
 
   async createArticle(data) {

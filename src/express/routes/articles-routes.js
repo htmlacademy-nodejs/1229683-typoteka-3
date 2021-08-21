@@ -49,7 +49,7 @@ articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
     title: body.title,
     announce: body.announce,
     fullText: body.fullText,
-    category: body.category,
+    categories: body.category,
   };
   try {
     await api.createArticle(articleData);
