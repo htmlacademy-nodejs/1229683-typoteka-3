@@ -60,7 +60,7 @@ module.exports = (app, articleService, commentService) => {
       `/:articleId/comments`,
       articleExists(articleService),
       async (req, res) => {
-        const {article} = res.locals;
+        const {article} = await res.locals;
         const {id: articleId} = article;
         const comments = await commentService.findAll(articleId);
 
