@@ -2,12 +2,12 @@
 
 const express = require(`express`);
 const request = require(`supertest`);
-const sequelize = require(`../lib/sequelize`);
 
 const {HttpCode} = require(`../../constants`);
 const search = require(`./search`);
 const DataService = require(`../data-service/search`);
 const defineModels = require(`../models`);
+const sequelize = require(`../lib/sequelize`);
 
 
 const createAPI = async () => {
