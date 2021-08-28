@@ -55,13 +55,13 @@ if (popup) {
 
 // меняет высоту поля textarea в блоке comments в зависимости от количества введенных в него строк.
 
-let comments = document.querySelector(`.post__comments`);
-let publication = document.querySelector(`.new-publication`);
-let textarea = null;
+// let comments = document.querySelector(`.post__comments`);
+// let publication = document.querySelector(`.new-publication`);
+// let textarea = null;
 
-if (comments || publication) {
-  textarea = document.querySelectorAll(`textarea`);
-}
+// if (comments || publication) {
+//   textarea = document.querySelectorAll(`textarea`);
+// }
 const map = (typeof Map === `function`) ? new Map() : (function () {
   const keys = [];
   const values = [];
@@ -183,7 +183,7 @@ function assign(ta) {
     clientWidth = ta.clientWidth;
 
     // prevents scroll-position jumping
-    overflows.forEach((el) => {
+    overflows.forEach(el => {
       el.node.scrollTop = el.scrollTop;
     });
 
@@ -236,14 +236,14 @@ function assign(ta) {
     }
   };
 
-  const kill = ((style) => {
+  const kill = (style => {
     window.removeEventListener(`resize`, pageResize, false);
     ta.removeEventListener(`input`, renew, false);
     ta.removeEventListener(`keyup`, renew, false);
     ta.removeEventListener(`autosize:kill`, kill, false);
     ta.removeEventListener(`autosize:renew`, renew, false);
 
-    Object.keys(style).forEach((key) => {
+    Object.keys(style).forEach(key => {
       ta.style[key] = style[key];
     });
 
@@ -260,7 +260,7 @@ function assign(ta) {
 
   // IE9 does not fire onpropertychange or oninput for deletions,
   // so binding to onkeyup to catch most of those events.
-  // There is no way that I know of to detect something like 'cut' in IE9.
+  // There is no way that I know of to detect something like `cut` in IE9.
   if (`onpropertychange` in ta && `oninput` in ta) {
     ta.addEventListener(`keyup`, renew, false);
   }
@@ -297,23 +297,23 @@ let autosize = null;
 
 // Do nothing in Node.js environment and IE8 (or lower)
 if (typeof window === `undefined` || typeof window.getComputedStyle !== `function`) {
-  autosize = (el) => el;
-  autosize.destroy = (el) => el;
-  autosize.update = (el) => el;
+  autosize = el => el;
+  autosize.destroy = el => el;
+  autosize.update = el => el;
 } else {
   autosize = (el, options) => {
     if (el) {
-      Array.prototype.forEach.call(el.length ? el : [el], (x) => assign(x, options));
+      Array.prototype.forEach.call(el.length ? el : [el], x => assign(x, options));
     }
     return el;
   };
-  autosize.destroy = (el) => {
+  autosize.destroy = el => {
     if (el) {
       Array.prototype.forEach.call(el.length ? el : [el], destroy);
     }
     return el;
   };
-  autosize.update = (el) => {
+  autosize.update = el => {
     if (el) {
       Array.prototype.forEach.call(el.length ? el : [el], update);
     }
@@ -321,8 +321,8 @@ if (typeof window === `undefined` || typeof window.getComputedStyle !== `functio
   };
 }
 
-if (textarea) {
-  textarea.forEach((element) => {
-    autosize(element);
-  });
-}
+// if (textarea) {
+//   textarea.forEach(element => {
+//     autosize(element);
+//   });
+// }
