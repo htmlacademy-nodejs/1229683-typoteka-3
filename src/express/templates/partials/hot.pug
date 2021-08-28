@@ -6,5 +6,5 @@ section.main-page__hot.hot
     each item in news
       li.hot__list-item
       a.hot__list-link(href='#')
-          | #{item.name}&nbsp;
-          sup.hot__link-sup=item.quantity
+          | #{item.title}&nbsp;
+          sup.hot__link-sup=item.comments.length
