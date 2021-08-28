@@ -33,6 +33,22 @@ class ArticleService {
     return this._Article.findByPk(id, {include: `categories`});
   }
 
+  async findPage({limit, offset, isNeedComments}) {
+    const include = [`categories`];
+
+    if (isNeedComments) {
+      include.push(`comments`);
+    }
+
+    const {count, rows} = await this._Article.findAndCountAll({
+      limit,
+      offset,
+      include,
+      distinct: true
+    });
+    return {count, articles: rows};
+  }
+
   async drop(id) {
     const deletedRows = await this._Article.destroy({
       where: {id}
