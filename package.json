@@ -8,9 +8,11 @@
     "start:dev": "cross-env LOG_LEVEL=error nodemon -r dotenv/config ./src/service/service.js --server",
     "start::debug": "cross-env LOG_LEVEL=info NODE_ENV=development node -r dotenv/config ./src/service/service.js --server",
     "start-front-server": "nodemon -r dotenv/config ./src/express/index.js",
-    "test::rest": "npm run jest",
-    "jest": "jest",
-    "eslint": "eslint --ext .js src/ --fix"
+    "test": "cross-env NODE_ENV=test  jest --testTimeout=10000",
+    "pretest": "cross-env NODE_ENV=test npm run db:reset",
+    "db:create:test": "cross-env NODE_ENV=test npx sequelize-cli db:create",
+    "eslint": "eslint --ext .js src/ --fix",
+    "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",

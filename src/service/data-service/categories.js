@@ -21,9 +21,10 @@ class CategoryService {
           `count`
           ]
         ],
-        group: [Sequelize.col(`Category.id`)],
+        group: [Sequelize.col(`category.id`)],
         include: [{
           model: this._ArticlesCategories,
+          as: `articlesCategories`,
           attributes: [],
         }]
       });
