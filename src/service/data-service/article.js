@@ -11,7 +11,8 @@ class ArticleService {
   async create(articleData) {
     const article = await this._Article.create(articleData);
     await article.addCategories(articleData.categories);
-    return article.get();
+    const newArticle = await this._Article.findByPk(article.get().id, {include: `categories`});
+    return newArticle;
   }
 
   async findAll(isNeedComments) {
