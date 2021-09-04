@@ -15,12 +15,13 @@ block content
                 .new-publication__date-block
                   label(for='new-publication-date' aria-label='Календарь')
                   input#new-publication-date(type='text' name='createdDate' placeholder=article.createdDate)
-            button.new-publication__button.button.button--colored(type='submit') Опубликовать
+            +insertErrorMessages(error)
           button.popup__button.button.button--popup-close(type='button' aria-label='Закрыть окно')
             | Закрыть
             | окно
           .new-publication__form.form
-            form(action='#' method='POST')
+            form(action=`/articles/edit/${id}` method="post" enctype="multipart/form-data" autocomplete="off")
+              button.new-publication__button.button.button--colored(type='submit') Опубликовать
               .form__wrapper.form__wrapper--intro
                 .form__field
                   label
@@ -34,9 +35,9 @@ block content
                       | Обзор
                   button.button.button--transparent Удалить
                 .new-publication__checkbox.new-publication__checkbox--auto
-                  each theme in article.category
+                  each theme in article.categories
                     input#checkbox-category(type='checkbox' name='checkbox-category')
-                    label(for='checkbox-category') #{theme}
+                    label(for='checkbox-category') #{theme.title}
                 a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
