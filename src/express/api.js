@@ -1,6 +1,7 @@
 "use strict";
 
 const axios = require(`axios`);
+const {HttpMethod} = require(`../constants`);
 const {getLogger} = require(`../service/lib/logger`);
 
 const logger = getLogger({name: `api`});
@@ -26,7 +27,8 @@ class API {
       });
       return response.data;
     } catch (err) {
-      return logger.error(err);
+      logger.error(err);
+      throw err;
     }
   }
 
@@ -36,6 +38,20 @@ class API {
 
   getArticle(id) {
     return this._load(`/articles/${id}`);
+  }
+
+  editArtcile(id, data) {
+    return this._load(`/articles/${id}`, {
+      method: HttpMethod.PUT,
+      data,
+    });
+  }
+
+  async createComment(id, data) {
+    return this._load(`/articles/${id}/comments`, {
+      method: HttpMethod.POST,
+      data,
+    });
   }
 
   search(query) {

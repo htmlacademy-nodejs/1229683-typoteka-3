@@ -2,6 +2,7 @@
 
 const express = require(`express`);
 const path = require(`path`);
+const bodyParser = require(`body-parser`);
 
 const articlesRouter = require(`./routes/articles-routes`);
 const myRouter = require(`./routes/my-routes`);
@@ -12,6 +13,8 @@ const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
 
 const app = express();
+
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(`/articles`, articlesRouter);
 app.use(`/my`, myRouter);
