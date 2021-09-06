@@ -31,7 +31,7 @@ class ArticleService {
   }
 
   findOne(id) {
-    return this._Article.findByPk(id, {include: `categories`});
+    return this._Article.findByPk(id, {include: [`categories`, `comments`]});
   }
 
   async findPage({limit, offset, isNeedComments}) {

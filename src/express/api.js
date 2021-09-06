@@ -27,7 +27,8 @@ class API {
       });
       return response.data;
     } catch (err) {
-      return logger.error(err);
+      logger.error(err);
+      throw err;
     }
   }
 
@@ -46,7 +47,7 @@ class API {
     });
   }
 
-  createComment(id, data) {
+  async createComment(id, data) {
     return this._load(`/articles/${id}/comments`, {
       method: HttpMethod.POST,
       data,
