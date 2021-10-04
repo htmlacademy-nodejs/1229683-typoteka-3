@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
   const {error} = schema.validate(comment);
 
   if (error) {
-    return res.status(HttpCode.BAD_REQUEST)
+    throw res.status(HttpCode.BAD_REQUEST)
       .send(error.details.map((err) => err.message).join(`\n`));
   }
 
