@@ -5,7 +5,7 @@ block content
     h1.visually-hidden Регистрация пользователя
     section
       .popup.popup--registration.popup--anti
-        a.popup__button.button.button--popup-close(aria-label='Закрыть окно')
+        a.popup__button.button.button--popup-close(aria-label='Закрыть окно', href='/')
           | Закрыть
           | окно
         h2.popup__title Регистрация
@@ -13,24 +13,27 @@ block content
           form(action='/register' method='post' enctype="multipart/form-data" )
             .form__field
               label
-                input(type='email',name='email', placeholder='Электронная почта',  required='')
+                input(type='email',name='email', placeholder='Электронная почта',  required='', value=user && user.email)
             .form__field
               label
-                input(type='text', name='first-name', placeholder='Имя', required='')
+                input(type='text', name='first-name', placeholder='Имя', required='', value=user && user['first-name'])
             .form__field
               label
-                input(type='text', name='last-name', placeholder='Фамилия')
+                input(type='text', name='last-name', placeholder='Фамилия', value=user && user['last-name'])
             .form__field
               label
                 input(type='password', name='password', placeholder='Пароль', required='')
             .form__field
               label
                 input(type='password', name='password-repeat', placeholder='Повтор пароля', required='')
-            .form__validation-error
-              p.form__error-message При регистрации произошли ошибки:
-              ul.form__errors
-                li.form__error Пароль не может состоять из двух букв
-                li.form__error Фамилия не должна быть смешной
+              if messages
+                .form__validation-error
+                  p.form__error-message При регистрации произошли ошибки:
+                  ul.form__errors
+                    each message in messages
+                      li.form__error= message
+
+
             .form__image-loader
               a.form__avatar.avatar
                 img(src='img/icons/smile.svg' alt='аватар пользователя')

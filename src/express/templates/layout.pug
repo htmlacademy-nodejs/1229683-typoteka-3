@@ -44,17 +44,15 @@ body
       }
       let i = start - 1
 
-    .tickets-list__pagination
-      ul.pagination
-        if start > 1
-          li
-            a(href=`${prefix}page=${page - 1}`) Назад
+    .preview__toggle-wrapper
+      ul.preview__pagination.pagination
+        li
+          a.pagination__button.button.button--backwards(class={'button--disabled': page === 1} href=`${prefix}page=${page - 1}`) Назад
         while i++ < end
-          li
-            a(class={active: i === page} href=`${prefix}page=${i}`)= i
-        if end < totalPages
-          li
-            a(href=`${prefix}page=${page + 1}`) Вперёд
+          li.pagination__item(class={'pagination__item--active': i === page})
+            a(href=`${prefix}page=${i}`)= i
+        li
+          a.pagination__button.button.button--forward(class={'button--disabled': page === totalPages} href=`${prefix}page=${page + 1}`) Вперёд
   mixin insertErrorMessages(messages)
     if messages
       each message in messages

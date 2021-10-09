@@ -60,9 +60,9 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
     res.redirect(`/login`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    const {user} = req.session;
+    const user = req.body;
 
-    res.render(`register`, {validationMessages, user});
+    res.render(`register`, {messages: validationMessages, user});
   }
 });
 
