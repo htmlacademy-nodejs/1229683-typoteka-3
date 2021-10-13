@@ -3,7 +3,6 @@
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
 const upload = require(`../../service/middlewares/upload`);
-const {prepareErrors} = require(`../../utils`);
 
 const mainRouter = new Router();
 const {latestComments} = require(`./mocks.js`);
@@ -59,10 +58,9 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
 
     res.redirect(`/login`);
   } catch (errors) {
-    const validationMessages = prepareErrors(errors);
     const user = req.body;
 
-    res.render(`register`, {messages: validationMessages, user});
+    res.render(`register`, {messages: errors.response.data, user});
   }
 });
 

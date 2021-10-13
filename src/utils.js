@@ -21,7 +21,3 @@ module.exports.getRandomDate = () => {
   const startDate = date.setMonth(date.getMonth() - 3);
   return new Date(startDate + Math.random() * (new Date().getTime() - startDate));
 };
-
-module.exports.prepareErrors = (errors) => {
-  return errors.response.data.split(`\n`);
-};
