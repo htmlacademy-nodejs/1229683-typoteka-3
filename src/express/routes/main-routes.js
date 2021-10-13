@@ -77,10 +77,10 @@ mainRouter.post(`/login`, async (req, res) => {
       res.redirect(`/`);
     });
   } catch (errors) {
-    const validationMessages = prepareErrors(errors);
+    console.log(errors)
     const {user} = req.body;
 
-    res.render(`login`, {user, messages: validationMessages});
+    res.render(`login`, {user, message: errors.response.data});
   }
 });
 
