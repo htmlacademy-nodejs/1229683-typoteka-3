@@ -4,8 +4,18 @@ const Joi = require(`joi`);
 
 const {HttpCode} = require(`../../constants`);
 
+const ErrorCommentMessage = {
+  TEXT: `Комментарий содержит меньше 20 символов`,
+  USER_ID: `Некорректный идентификатор пользователя`
+};
+
 const schema = Joi.object({
-  text: Joi.string().min(20).required()
+  text: Joi.string().min(20).required().messages({
+    'string.min': ErrorCommentMessage.TEXT
+  }),
+  userId: Joi.number().integer().positive().required().messages({
+    'number.base': ErrorCommentMessage.USER_ID
+  })
 });
 
 module.exports = (req, res, next) => {
@@ -14,7 +24,7 @@ module.exports = (req, res, next) => {
   const {error} = schema.validate(comment);
 
   if (error) {
-    return res.status(HttpCode.BAD_REQUEST)
+    throw res.status(HttpCode.BAD_REQUEST)
       .send(error.details.map((err) => err.message).join(`\n`));
   }
 

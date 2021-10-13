@@ -1,0 +1,45 @@
+extends layout.pug
+
+block content
+  main
+    h1.visually-hidden Регистрация пользователя
+    section
+      .popup.popup--registration.popup--anti
+        a.popup__button.button.button--popup-close(aria-label='Закрыть окно', href='/')
+          | Закрыть
+          | окно
+        h2.popup__title Регистрация
+        .popup__form.popup__form--active.form.form--register
+          form(action='/register' method='post' enctype="multipart/form-data" )
+            .form__field
+              label
+                input(type='email',name='email', placeholder='Электронная почта',  required='', value=user && user.email)
+            .form__field
+              label
+                input(type='text', name='first-name', placeholder='Имя', required='', value=user && user['first-name'])
+            .form__field
+              label
+                input(type='text', name='last-name', placeholder='Фамилия', value=user && user['last-name'])
+            .form__field
+              label
+                input(type='password', name='password', placeholder='Пароль', required='')
+            .form__field
+              label
+                input(type='password', name='password-repeat', placeholder='Повтор пароля', required='')
+              if messages
+                .form__validation-error
+                  p.form__error-message При регистрации произошли ошибки:
+                  ul.form__errors
+                    each message in messages
+                      li.form__error= message
+
+
+            .form__image-loader
+              a.form__avatar.avatar
+                img(src='img/icons/smile.svg' alt='аватар пользователя')
+              label
+                input.visually-hidden(type='file' name='avatar')
+                | Загрузить фото профиля
+            button.form__submit-btn.form__submit-btn--register.button.button--colored(type='submit') Зарегистрироваться
+
+

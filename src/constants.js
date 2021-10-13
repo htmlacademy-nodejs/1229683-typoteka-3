@@ -14,6 +14,7 @@ module.exports.HttpCode = {
   FORBIDDEN: 403,
   UNAUTHORIZED: 401,
   BAD_REQUEST: 400,
+  CONFLICT: 409
 };
 
 module.exports.MAX_ID_LENGTH = 6;
