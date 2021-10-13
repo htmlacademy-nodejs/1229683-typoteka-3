@@ -13,6 +13,9 @@ const UPLOAD_DIR = `upload`;
 
 const app = express();
 
+
+app.use(express.urlencoded({extended: false}));
+
 app.use(`/articles`, articlesRouter);
 app.use(`/my`, myRouter);
 app.use(`/`, mainRouter);

@@ -5,6 +5,7 @@ const {HttpCode} = require(`../../constants`);
 const articleValidator = require(`../middlewares/article-validator`);
 const articleExists = require(`../middlewares/article-exists`);
 const commentValidator = require(`../middlewares/comment-validator`);
+const routeParamsValidator = require(`../middlewares/route-params-validator`);
 
 module.exports = (app, articleService, commentService) => {
   const route = new Router();
@@ -91,11 +92,17 @@ module.exports = (app, articleService, commentService) => {
 
   route.post(
       `/:articleId/comments`,
-      [articleExists(articleService), commentValidator],
+      [articleExists(articleService), commentValidator, routeParamsValidator],
       async (req, res) => {
         const {article} = res.locals;
         const {id: articleId} = article;
-        const comment = await commentService.create(articleId, req.body);
+        let comment;
+
+        try {
+          comment = await commentService.create(articleId, req.body);
+        } catch (err) {
+          return res.status(HttpCode.BAD_REQUEST).send(err);
+        }
 
         return res.status(HttpCode.CREATED).send(comment);
       }

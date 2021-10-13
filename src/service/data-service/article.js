@@ -6,35 +6,66 @@ class ArticleService {
     this._Article = sequelize.models.article;
     this._Comment = sequelize.models.comment;
     this._Category = sequelize.models.сategory;
+    this._User = sequelize.models.user;
   }
 
   async create(articleData) {
     const article = await this._Article.create(articleData);
     await article.addCategories(articleData.categories);
-    return article.get();
+    const newArticle = await this._Article.findByPk(article.get().id, {include: `categories`});
+    return newArticle;
   }
 
   async findAll(isNeedComments) {
-    const include = [`categories`];
+    const include = [`categories`,
+      {
+        model: this._User,
+        attributes: {
+          exclude: [`passwordHash`]
+        }
+      }];
 
     if (isNeedComments) {
-      include.push(`comments`);
+      include.push({
+        model: this._Comment,
+        include: [
+          {
+            model: this._User,
+            attributes: {
+              exclude: [`passwordhash`]
+            }
+          }
+        ]
+      });
     }
 
     const articles = await this._Article.findAll({
       include,
-      subQuery: false
+      subQuery: false,
+      order: [
+        [`createdAt`, `DESC`]
+      ]
     });
 
     return articles.map((item) => item.get());
   }
 
   findOne(id) {
-    return this._Article.findByPk(id, {include: `categories`});
+    return this._Article.findByPk(id, {include: [`categories`, `comments`, {
+      model: this._User,
+      attributes: {
+        exclude: [`passwordhash`]
+      }
+    }]});
   }
 
   async findPage({limit, offset, isNeedComments}) {
-    const include = [`categories`];
+    const include = [`categories`, {
+      model: this._User,
+      attributes: {
+        exclude: [`passwordhash`]
+      }
+    }];
 
     if (isNeedComments) {
       include.push(`comments`);
