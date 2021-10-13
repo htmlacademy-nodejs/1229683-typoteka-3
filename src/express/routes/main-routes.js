@@ -66,4 +66,24 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
   }
 });
 
+mainRouter.post(`/login`, async (req, res) => {
+  const email = req.body[`email`];
+  const password = req.body[`password`];
+  console.log(email, password)
+
+  try {
+    const user = await api.auth({email, password});
+
+    req.session.user = user;
+    req.session.save(() => {
+      res.redirect(`/`);
+    });
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    const {user} = req.body;
+
+    res.render(`login`, {user, messages: validationMessages});
+  }
+});
+
 module.exports = mainRouter;
