@@ -17,7 +17,7 @@ block content
             .form__field
               label
                 input(type='password' name='password' placeholder='Пароль' required='')
-            +insertErrorMessages(messages)
+            p.form__error-message= message
             button.form__submit-btn.form__submit-btn--log-in.button.button--colored(type='submit') Войти
 
 

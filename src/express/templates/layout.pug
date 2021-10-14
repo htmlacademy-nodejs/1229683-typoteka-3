@@ -56,9 +56,9 @@ body
   mixin insertErrorMessages(messages)
     if messages
       each message in messages
-        .server-error= message
+        p.form__error= message
 
-  if(admin)
+  if(user)
     div.wrapper.wrapper--nobackground
       include partials/header-auth.pug
       block content
