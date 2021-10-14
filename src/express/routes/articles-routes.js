@@ -24,32 +24,39 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-articlesRouter.get(`/category/:id`, (req, res) =>
-  res.render(`articles-by-category`, {themesList})
+articlesRouter.get(`/category/:id`, (req, res) =>{
+  const {user} = req.session;
+
+  res.render(`articles-by-category`, {themesList, user});
+}
 );
 
 articlesRouter.get(`/add`, async (req, res) => {
   const {error} = req.query;
+  const {user} = req.session;
+
   const categories = await api.getCategories();
-  res.render(`add-article`, {categories, error});
+  res.render(`add-article`, {categories, error, user});
 });
 
 articlesRouter.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
   const {error} = req.query;
+  const {user} = req.session;
 
   const [article, categories] = await Promise.all([
     api.getArticle(id),
     api.getCategories(),
   ]);
-  res.render(`edit-article`, {id, article, categories, error});
+  res.render(`edit-article`, {id, article, categories, error, user});
 });
 
 articlesRouter.get(`/:id`, async (req, res) => {
   const {id} = req.params;
   const {error} = req.query;
+  const {user} = req.session;
   const article = await api.getArticle(id);
-  res.render(`article`, {article, id, error});
+  res.render(`article`, {article, id, error, user});
 });
 articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
   const {body, file} = req;
