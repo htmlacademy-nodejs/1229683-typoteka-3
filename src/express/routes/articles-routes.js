@@ -5,6 +5,7 @@ const multer = require(`multer`);
 const path = require(`path`);
 const {nanoid} = require(`nanoid`);
 const api = require(`../api`).getAPI();
+const auth = require(`../../service/middlewares/auth`);
 
 const articlesRouter = new Router();
 const {themesList} = require(`./mocks.js`);
@@ -31,7 +32,7 @@ articlesRouter.get(`/category/:id`, (req, res) =>{
 }
 );
 
-articlesRouter.get(`/add`, async (req, res) => {
+articlesRouter.get(`/add`, auth, async (req, res) => {
   const {error} = req.query;
   const {user} = req.session;
 
@@ -39,7 +40,7 @@ articlesRouter.get(`/add`, async (req, res) => {
   res.render(`add-article`, {categories, error, user});
 });
 
-articlesRouter.get(`/edit/:id`, async (req, res) => {
+articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
   const {id} = req.params;
   const {error} = req.query;
   const {user} = req.session;
@@ -58,9 +59,11 @@ articlesRouter.get(`/:id`, async (req, res) => {
   const article = await api.getArticle(id);
   res.render(`article`, {article, id, error, user});
 });
-articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
+articlesRouter.post(`/add`, auth, upload.single(`picture`), async (req, res) => {
   const {body, file} = req;
+  const {user} = req.session;
   const articleData = {
+    userId: user.id,
     picture: file.filename,
     title: body.title,
     announce: body.announce,
@@ -75,7 +78,7 @@ articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
   }
 });
 
-articlesRouter.post(`/edit/:id`, upload.single(`picture`), async (req, res) => {
+articlesRouter.post(`/edit/:id`, auth, upload.single(`picture`), async (req, res) => {
   const {body, file} = req;
   const {id} = req.params;
   const articleData = {
@@ -94,11 +97,12 @@ articlesRouter.post(`/edit/:id`, upload.single(`picture`), async (req, res) => {
 });
 
 
-articlesRouter.post(`/:id/comments`, async (req, res) => {
+articlesRouter.post(`/:id/comments`, auth, async (req, res) => {
   const {id} = req.params;
   const {comment} = req.body;
+  const {user} = req.session;
   try {
-    await api.createComment(id, {text: comment});
+    await api.createComment(id, {text: comment, userId: user.id});
     res.redirect(`/articles/${id}`);
   } catch (error) {
     res.redirect(`/articles/${id}/?error=${encodeURIComponent(error.response.data)}`);
