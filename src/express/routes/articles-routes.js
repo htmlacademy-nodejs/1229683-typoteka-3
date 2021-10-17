@@ -1,32 +1,15 @@
 "use strict";
 
 const {Router} = require(`express`);
-const multer = require(`multer`);
-const path = require(`path`);
-const {nanoid} = require(`nanoid`);
 const api = require(`../api`).getAPI();
 const csrf = require(`csurf`);
-const auth = require(`../../service/middlewares/auth`);
+const auth = require(`../middlewares/auth`);
+const upload = require(`../middlewares/upload`);
 const {themesList} = require(`./mocks.js`);
 
 const articlesRouter = new Router();
 const csrfProtection = csrf();
 
-
-const UPLOAD_DIR = `../../../upload/img/`;
-
-const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
-
-const storage = multer.diskStorage({
-  destination: uploadDirAbsolute,
-  filename: (req, file, cb) => {
-    const uniqueName = nanoid(10);
-    const extension = file.originalname.split(`.`).pop();
-    cb(null, `${uniqueName}.${extension}`);
-  },
-});
-
-const upload = multer({storage});
 
 articlesRouter.get(`/category/:id`, (req, res) =>{
   const {user} = req.session;
@@ -72,13 +55,15 @@ articlesRouter.post(`/add`, auth, upload.single(`picture`), csrfProtection, asyn
     title: body.title,
     announce: body.announce,
     fullText: body.fullText,
-    categories: body.category,
+    categories: Object.keys(body).filter((it) => body[it] === `checked`),
   };
   try {
     await api.createArticle(articleData);
     res.redirect(`/my`);
   } catch (error) {
-    res.redirect(`/articles/add?error=${encodeURIComponent(error.response.data)}`);
+    const categories = await api.getCategories();
+
+    res.render(`add-article`, {messages: error.response.data || null, categories, user, csrfToken: req.csrfToken()});
   }
 });
 

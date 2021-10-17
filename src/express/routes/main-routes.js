@@ -2,7 +2,7 @@
 
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
-const upload = require(`../../service/middlewares/upload`);
+const upload = require(`../middlewares/upload`);
 
 const mainRouter = new Router();
 const {latestComments} = require(`./mocks.js`);
