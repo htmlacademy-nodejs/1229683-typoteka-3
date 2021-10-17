@@ -5,10 +5,13 @@ const multer = require(`multer`);
 const path = require(`path`);
 const {nanoid} = require(`nanoid`);
 const api = require(`../api`).getAPI();
+const csrf = require(`csurf`);
 const auth = require(`../../service/middlewares/auth`);
+const {themesList} = require(`./mocks.js`);
 
 const articlesRouter = new Router();
-const {themesList} = require(`./mocks.js`);
+const csrfProtection = csrf();
+
 
 const UPLOAD_DIR = `../../../upload/img/`;
 
@@ -32,15 +35,15 @@ articlesRouter.get(`/category/:id`, (req, res) =>{
 }
 );
 
-articlesRouter.get(`/add`, auth, async (req, res) => {
+articlesRouter.get(`/add`, auth, csrfProtection, async (req, res) => {
   const {error} = req.query;
   const {user} = req.session;
 
   const categories = await api.getCategories();
-  res.render(`add-article`, {categories, error, user});
+  res.render(`add-article`, {categories, error, user, csrfToken: req.csrfToken()});
 });
 
-articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
+articlesRouter.get(`/edit/:id`, auth, csrfProtection, async (req, res) => {
   const {id} = req.params;
   const {error} = req.query;
   const {user} = req.session;
@@ -49,17 +52,18 @@ articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
     api.getArticle(id),
     api.getCategories(),
   ]);
-  res.render(`edit-article`, {id, article, categories, error, user});
+  res.render(`edit-article`, {id, article, categories, error, user, csrfToken: req.csrfToken()});
 });
 
-articlesRouter.get(`/:id`, async (req, res) => {
+articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   const {id} = req.params;
   const {error} = req.query;
   const {user} = req.session;
   const article = await api.getArticle(id);
-  res.render(`article`, {article, id, error, user});
+  res.render(`article`, {article, id, error, user, csrfToken: req.csrfToken()});
 });
-articlesRouter.post(`/add`, auth, upload.single(`picture`), async (req, res) => {
+
+articlesRouter.post(`/add`, auth, upload.single(`picture`), csrfProtection, async (req, res) => {
   const {body, file} = req;
   const {user} = req.session;
   const articleData = {
@@ -78,7 +82,7 @@ articlesRouter.post(`/add`, auth, upload.single(`picture`), async (req, res) => 
   }
 });
 
-articlesRouter.post(`/edit/:id`, auth, upload.single(`picture`), async (req, res) => {
+articlesRouter.post(`/edit/:id`, auth, upload.single(`picture`), csrfProtection, async (req, res) => {
   const {body, file} = req;
   const {id} = req.params;
   const articleData = {
@@ -97,7 +101,7 @@ articlesRouter.post(`/edit/:id`, auth, upload.single(`picture`), async (req, res
 });
 
 
-articlesRouter.post(`/:id/comments`, auth, async (req, res) => {
+articlesRouter.post(`/:id/comments`, auth, csrfProtection, async (req, res) => {
   const {id} = req.params;
   const {comment} = req.body;
   const {user} = req.session;

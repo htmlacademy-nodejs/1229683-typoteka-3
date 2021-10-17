@@ -20,6 +20,7 @@ block content
             | окно
           .new-publication__form.form
             form(action='/articles/add' method='post' enctype="multipart/form-data" autocomplete="off")
+              input(type="hidden" name="_csrf" value=csrfToken)
               .form__wrapper.form__wrapper--intro
                 .form__field
                   label
