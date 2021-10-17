@@ -1,14 +1,5 @@
-POST http://localhost:8080/login HTTP/1.1
-content-type: multipart/form-data
+# POST http://localhost:3000/api/articles/1/comments
 
-------WebKitFormBoundaryl0BfwBO2b46iJoYk
-Content-Disposition: form-data; name="email"
+# {"comment": "ccc"}
 
-mail@mail.ru
-------WebKitFormBoundaryl0BfwBO2b46iJoYk
-Content-Disposition: form-data; name="password"
-
-111
-------WebKitFormBoundaryl0BfwBO2b46iJoYk--
-
-
+GET http://localhost:3000/api/search?query=%D0%B7%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%B5
