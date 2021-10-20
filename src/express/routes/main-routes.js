@@ -3,6 +3,7 @@
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
 const upload = require(`../middlewares/upload`);
+const auth = require(`../middlewares/auth`);
 
 const mainRouter = new Router();
 const {latestComments} = require(`./mocks.js`);
@@ -86,11 +87,11 @@ mainRouter.post(`/login`, async (req, res) => {
   } catch (errors) {
     const user = req.body;
 
-    res.render(`login`, {user, message: errors.response.data || `Некоторая ошибка произошла, беда!`});
+    res.render(`login`, {user, message: errors.response.data || `Что-то пошло не так. Повторите позднее`});
   }
 });
 
-mainRouter.get(`/logout`, (req, res) => {
+mainRouter.get(`/logout`, auth, (req, res) => {
   delete req.session.user;
   res.redirect(`/`);
 });
