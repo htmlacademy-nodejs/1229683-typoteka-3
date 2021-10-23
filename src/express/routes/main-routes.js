@@ -93,7 +93,7 @@ mainRouter.post(`/login`, async (req, res) => {
 
 mainRouter.get(`/logout`, auth, (req, res) => {
   delete req.session.user;
-  res.redirect(`/`);
+  req.session.save(() => res.redirect(`/`));
 });
 
 module.exports = mainRouter;

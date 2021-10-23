@@ -4,6 +4,7 @@ const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
 const csrf = require(`csurf`);
 const auth = require(`../middlewares/auth`);
+const isAdmin = require(`../middlewares/isAdmin`);
 const upload = require(`../middlewares/upload`);
 const {themesList} = require(`./mocks.js`);
 
@@ -46,7 +47,7 @@ articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   res.render(`article`, {article, id, error, user, csrfToken: req.csrfToken()});
 });
 
-articlesRouter.post(`/add`, auth, csrfProtection, upload.single(`picture`), async (req, res) => {
+articlesRouter.post(`/add`, auth, isAdmin, csrfProtection, upload.single(`picture`), async (req, res) => {
   const {body, file} = req;
   const {user} = req.session;
   const articleData = {
@@ -67,7 +68,7 @@ articlesRouter.post(`/add`, auth, csrfProtection, upload.single(`picture`), asyn
   }
 });
 
-articlesRouter.post(`/edit/:id`, auth, csrfProtection, upload.single(`picture`), async (req, res) => {
+articlesRouter.post(`/edit/:id`, auth, isAdmin, csrfProtection, upload.single(`picture`), async (req, res) => {
   const {body, file} = req;
   const {id} = req.params;
   const articleData = {
