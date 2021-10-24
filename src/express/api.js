@@ -47,7 +47,7 @@ class API {
     });
   }
 
-  async createComment(id, data) {
+  createComment(id, data) {
     return this._load(`/articles/${id}/comments`, {
       method: HttpMethod.POST,
       data,
@@ -58,11 +58,15 @@ class API {
     return this._load(`/search`, {params: {query}});
   }
 
-  async getCategories(count) {
-    return this._load(`/categories`, {params: {count}});
+  getCategory({id, limit, offset}) {
+    return this._load(`/categories/${id}`, {params: {limit, offset}});
   }
 
-  async createArticle(data) {
+  getCategories(needCount) {
+    return this._load(`/categories`, {params: {needCount}});
+  }
+
+  createArticle(data) {
     return this._load(`/articles`, {
       method: `POST`,
       data,

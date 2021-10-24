@@ -1,9 +1,9 @@
 section.main-page__theme-list
   h2.visually-hidden Список тем
   ul.themes
-    each item in themesList
+    each item in categories
       li.themes__item
-        a.themes__item-link(href='#')
+        a.themes__item-link(href=`/articles/category/${item.id}`)
           | !{item.title}&nbsp;
-          sup=item.quantity
+          sup=item.count
 

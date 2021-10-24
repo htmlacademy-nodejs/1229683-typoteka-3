@@ -6,16 +6,48 @@ const csrf = require(`csurf`);
 const auth = require(`../middlewares/auth`);
 const isAdmin = require(`../middlewares/isAdmin`);
 const upload = require(`../middlewares/upload`);
-const {themesList} = require(`./mocks.js`);
 
 const articlesRouter = new Router();
 const csrfProtection = csrf();
 
 
-articlesRouter.get(`/category/:id`, (req, res) =>{
-  const {user} = req.session;
+const ARTICLES_PER_PAGE = 8;
 
-  res.render(`articles-by-category`, {themesList, user});
+
+articlesRouter.get(`/category/:id`, async (req, res) =>{
+  const {user} = req.session;
+  const {id} = req.params;
+
+  let {page = 1} = req.query;
+  page = +page;
+
+  const limit = ARTICLES_PER_PAGE;
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
+
+  const [categories, {category, count, articlesByCategory}] = await Promise.all([
+    api.getCategories(true),
+    api.getCategory({id, limit, offset})
+  ]);
+
+
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
+
+  const articles = {
+    category,
+    current: articlesByCategory
+  };
+
+
+  res.render(`articles-by-category`, {
+    // fullView: true,
+    categories,
+    count,
+    articles: articles.current,
+    page,
+    totalPages,
+    user
+  });
+
 }
 );
 

@@ -6,6 +6,7 @@ class CategoryService {
   constructor(sequelize) {
     this._Category = sequelize.models.category;
     this._ArticlesCategories = sequelize.models.articlesCategories;
+    this._Article = sequelize.models.article;
   }
 
   async findAll(needCount) {
@@ -32,6 +33,42 @@ class CategoryService {
       return result.map((it) => it.get());
     }
     return this._Category.findAll({raw: true});
+  }
+
+  async findOne(id) {
+    return this._Category.findByPk(id);
+  }
+
+  async findPage(id, limit, offset) {
+    const articlesIdByCategory = await this._ArticlesCategories.findAll({
+      attributes: [`articleId`],
+      where: {
+        categoryId: id
+      },
+      raw: true
+    });
+
+    const articlesId = articlesIdByCategory.map((articleId) => articleId.articleId);
+
+
+    const {count, rows} = await this._Article.findAndCountAll({
+      limit,
+      offset,
+      include: [
+        `categories`,
+        `comments`,
+      ],
+      order: [
+        [`createdAt`, `DESC`]
+      ],
+      where: {
+        id: articlesId
+      },
+      distinct: true
+    });
+
+
+    return {count, articlesByCategory: rows};
   }
 }
 
