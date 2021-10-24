@@ -58,11 +58,16 @@ body
       each message in messages
         p.form__error= message
 
-  if(user)
+  if(user && !user.isAdmin)
     div.wrapper.wrapper--nobackground
-      include partials/header-auth.pug
+      include partials/header-user.pug
       block content
       include partials/footer.pug
+  else if(user && user.isAdmin)
+    div.wrapper.wrapper--nobackground
+        include partials/header-auth.pug
+        block content
+        include partials/footer.pug
   else
     div.wrapper
       include partials/header.pug
