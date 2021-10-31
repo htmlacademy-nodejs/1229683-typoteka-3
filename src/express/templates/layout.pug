@@ -57,6 +57,10 @@ body
     if messages
       each message in messages
         p.form__error= message
+  mixin formatDate(dateString,className)
+    time(datetime=dateString, class=className) #{new Date(dateString).toLocaleDateString('ru-RU')}
+
+
 
   if(user && !user.isAdmin)
     div.wrapper.wrapper--nobackground
