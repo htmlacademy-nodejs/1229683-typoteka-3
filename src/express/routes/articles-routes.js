@@ -93,7 +93,7 @@ articlesRouter.post(`/add`, auth, isAdmin, upload.single(`picture`), csrfProtect
   };
   try {
     await api.createArticle(articleData);
-    res.redirect(`/my`);
+    res.redirect(`/my-articles`);
   } catch (error) {
     const categories = await api.getCategories();
 
@@ -113,7 +113,7 @@ articlesRouter.post(`/edit/:id`, auth, isAdmin, csrfProtection, upload.single(`p
   };
   try {
     await api.editArtcile(articleData);
-    res.redirect(`/my`);
+    res.redirect(`/my-articles`);
   } catch (error) {
     res.redirect(`/articles/edit/${id}?error=${encodeURIComponent(error.response.data)}`);
   }
@@ -129,6 +129,19 @@ articlesRouter.post(`/:id/comments`, auth, csrfProtection, async (req, res) => {
     res.redirect(`/articles/${id}`);
   } catch (error) {
     res.redirect(`/articles/${id}/?error=${encodeURIComponent(error.response.data)}`);
+  }
+});
+
+articlesRouter.post(`/:id`, auth, async (req, res) => {
+  const {user} = req.session;
+  const {id} = req.params;
+
+  try {
+    await api.removeArticle({id, userId: user.id});
+
+    res.redirect(`/my`);
+  } catch (errors) {
+    res.status(errors.response.status).send(errors.response.statusText);
   }
 });
 
