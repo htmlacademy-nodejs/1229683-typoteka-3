@@ -8,7 +8,7 @@ section.main-page__list.preview
             li.preview__breadcrumbs-item
               a.preview__breadcrumbs-link(href=`/articles/category/${category.id}`) #{category.title}
         .preview__background
-          img.preview__background-image(src=`/img/${article.picture}`, width='460', height='240', alt=article.picture)
+          img.preview__background-image(src=`/img/${article.picture}`, width='460', height='240', alt=article.picture, style="height:100%; object-fit:unset")
         +formatDate(article.createdAt, 'preview__time')
         h3.preview__name
           a.preview__name-link(href=`/articles/${article.id}`) #{article.title}

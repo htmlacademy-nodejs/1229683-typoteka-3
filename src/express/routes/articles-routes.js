@@ -79,16 +79,17 @@ articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   res.render(`article`, {article, id, error, user, csrfToken: req.csrfToken()});
 });
 
-articlesRouter.post(`/add`, auth, isAdmin, csrfProtection, upload.single(`picture`), async (req, res) => {
+articlesRouter.post(`/add`, auth, isAdmin, upload.single(`picture`), csrfProtection, async (req, res) => {
   const {body, file} = req;
   const {user} = req.session;
   const articleData = {
     userId: user.id,
-    picture: file.filename,
+    picture: file ? file.filename : ``,
     title: body.title,
     announce: body.announce,
     fullText: body.fullText,
     categories: Object.keys(body).filter((it) => body[it] === `checked`),
+    date: body.date ? body.date : new Date(),
   };
   try {
     await api.createArticle(articleData);
