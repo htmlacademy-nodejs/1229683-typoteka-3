@@ -17,7 +17,7 @@ mainRouter.get(`/`, async (req, res) => {
   const limit = ARTICLES_PER_PAGE;
   const offset = (page - 1) * ARTICLES_PER_PAGE;
 
-  const [{count, articles}, categories, latestComments] = await Promise.all([
+  const [{count, articles}, categories, comments] = await Promise.all([
     api.getArticles({isNeedComments: true, limit, offset}),
     api.getCategories(true),
     api.getComments(),
@@ -25,9 +25,9 @@ mainRouter.get(`/`, async (req, res) => {
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
-  const hottest = articles.sort((a, b) => b.comments.length - a.comments.length);
+  const hottest = articles.filter((it) => it.comments.length > 0).sort((a, b) => b.comments.length - a.comments.length);
 
-  res.render(`main`, {news: hottest.slice(0, 4), articles, categories, page, totalPages, latestComments, user});
+  res.render(`main`, {news: hottest.slice(0, 4), articles, categories, page, totalPages, latestComments: comments.slice(0, 4), user});
 });
 mainRouter.get(`/register`, (req, res) => res.render(`register`));
 mainRouter.get(`/login`, (req, res) => res.render(`login`));
@@ -35,10 +35,10 @@ mainRouter.get(`/search`, async (req, res) => {
   const {user} = req.session;
 
   try {
-    const {search} = req.query;
-    const results = await api.search(search);
+    const {query} = req.query;
+    const results = await api.search(query);
 
-    res.render(`search-results`, {results, user});
+    res.render(`search`, {results, user, query});
   } catch (err) {
     res.render(`search`, {
       results: [],
@@ -87,9 +87,9 @@ mainRouter.post(`/login`, async (req, res) => {
       res.redirect(`/`);
     });
   } catch (errors) {
-    const user = req.body;
+    const userInfo = req.body;
 
-    res.render(`login`, {user, message: errors.response.data || `Что-то пошло не так. Повторите позднее`});
+    res.render(`login`, {userInfo, message: errors.response.data || `Что-то пошло не так. Повторите позднее`});
   }
 });
 
