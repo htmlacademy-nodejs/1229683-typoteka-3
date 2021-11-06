@@ -7,7 +7,7 @@ class CommentService {
     this._User = sequelize.models.user;
   }
 
-  async findAll(articleId) {
+  async findByArticle(articleId) {
     return this._Comment.findAll({
       where: {articleId},
       include: [{
@@ -20,7 +20,7 @@ class CommentService {
     });
   }
 
-  async findLatest() {
+  async findAll() {
     const include = [`article`,
       {
         model: this._User,
@@ -31,7 +31,6 @@ class CommentService {
 
     const comments = await this._Comment.findAll({
       include,
-      limit: 4,
       subQuery: false,
       order: [
         [`createdAt`, `DESC`]

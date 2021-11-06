@@ -39,8 +39,8 @@ articlesRouter.get(`/category/:id`, async (req, res) =>{
 
 
   res.render(`articles-by-category`, {
-    // fullView: true,
     categories,
+    category,
     count,
     articles: articles.current,
     page,
@@ -132,6 +132,16 @@ articlesRouter.post(`/:id/comments`, auth, csrfProtection, async (req, res) => {
   }
 });
 
+articlesRouter.post(`/:articleId/comments/:commentId`, auth, isAdmin, csrfProtection, async (req, res) => {
+  const {articleId, commentId} = req.params;
+  try {
+    await api.removeComment({commentId, articleId});
+    res.redirect(`/my/comments`);
+  } catch (error) {
+    res.redirect(`/articles/?error=${encodeURIComponent(error.response.data)}`);
+  }
+});
+
 articlesRouter.post(`/:id`, auth, async (req, res) => {
   const {user} = req.session;
   const {id} = req.params;
@@ -139,7 +149,7 @@ articlesRouter.post(`/:id`, auth, async (req, res) => {
   try {
     await api.removeArticle({id, userId: user.id});
 
-    res.redirect(`/my`);
+    res.redirect(`/my/articles`);
   } catch (errors) {
     res.status(errors.response.status).send(errors.response.statusText);
   }

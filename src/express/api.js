@@ -54,6 +54,12 @@ class API {
     });
   }
 
+  removeComment({articleId, commentId}) {
+    return this._load(`/articles/${articleId}/comments/${commentId}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
   search(query) {
     return this._load(`/search`, {params: {query}});
   }

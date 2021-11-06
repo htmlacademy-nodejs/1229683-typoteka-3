@@ -9,7 +9,7 @@ module.exports = (app, service) => {
   app.use(`/comments`, route);
 
   route.get(`/`, async (req, res) => {
-    const comments = await service.findLatest();
+    const comments = await service.findAll();
     res.status(HttpCode.OK).json(comments);
   });
 

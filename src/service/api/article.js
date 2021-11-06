@@ -68,7 +68,7 @@ module.exports = (app, articleService, commentService) => {
       async (req, res) => {
         const {article} = await res.locals;
         const {id: articleId} = article;
-        const comments = await commentService.findAll(articleId);
+        const comments = await commentService.findByArticle(articleId);
 
         res.status(HttpCode.OK).send(comments);
       }

@@ -6,7 +6,7 @@ const auth = require(`../middlewares/auth`);
 
 const myRouter = new Router();
 
-myRouter.get(`/`, auth, async (req, res) => {
+myRouter.get(`/articles`, auth, async (req, res) => {
   const {user} = req.session;
 
   const articles = await api.getArticles({isNeedComments: false});
@@ -15,8 +15,9 @@ myRouter.get(`/`, auth, async (req, res) => {
 myRouter.get(`/comments`, auth, async (req, res) => {
   const {user} = req.session;
 
-  const articles = await api.getArticles({isNeedComments: true});
-  res.render(`comments`, {comments: articles.slice(0, 3), user});
+  const comments = await api.getComments();
+
+  res.render(`comments`, {comments, user});
 });
 
 module.exports = myRouter;
