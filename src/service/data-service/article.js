@@ -32,7 +32,7 @@ class ArticleService {
           {
             model: this._User,
             attributes: {
-              exclude: [`passwordhash`]
+              exclude: [`passwordHash`]
             }
           }
         ]
@@ -51,10 +51,20 @@ class ArticleService {
   }
 
   findOne(id) {
-    return this._Article.findByPk(id, {include: [`categories`, `comments`, {
+    return this._Article.findByPk(id, {include: [`categories`, {
+      model: this._Comment,
+      include: [
+        {
+          model: this._User,
+          attributes: {
+            exclude: [`passwordHash`, `email`]
+          }
+        }
+      ]
+    }, {
       model: this._User,
       attributes: {
-        exclude: [`passwordhash`]
+        exclude: [`passwordHash`]
       }
     }]});
   }
@@ -63,7 +73,7 @@ class ArticleService {
     const include = [`categories`, {
       model: this._User,
       attributes: {
-        exclude: [`passwordhash`]
+        exclude: [`passwordHash`]
       }
     }];
 

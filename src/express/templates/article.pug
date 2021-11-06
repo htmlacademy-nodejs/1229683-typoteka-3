@@ -23,9 +23,9 @@ block content
                     //- sup 88
                   button.themes__remove-btn(type='button') Удалить категорию
           .post__picture
-            img(src='/img/sea-fullsize@1x.jpg' alt='пейзаж море, скалы, пляж')
+            img(src=`/img/${article.picture}` alt='пейзаж море, скалы, пляж')
           .post__text
-            h3 Бирюзовое доверие
+            h3 #{article.announce}
             p #{article.fullText}
       .post__wrapper.post__wrapper--comments
         section.post__comments.comments
@@ -34,14 +34,15 @@ block content
             each comment in article.comments
               li.comments__comment
                 .comments__avatar.avatar
-                  img(src='/img/avatar-1.png' alt='аватар пользователя')
+                  img(src=`/img/${comment.user.avatar}` alt='аватар пользователя')
                 .comments__text
                   .comments__head
-                    p Евгений Петров •
+                    p #{comment.user.firstName} •
                     time.comments__date(datetime=formatDate(comment.createdAt)) #{formatDate(comment.createdAt)}
                   p.comments__message #{comment.text}
           .comments__footer.comments__footer--user
             form(action=`${id}/comments` method='POST')
+              input(type="hidden" name="_csrf" value=csrfToken)
               .comments__avatar.avatar
                 img(src='/img/avatar-2.png' alt='аватар пользователя')
               label

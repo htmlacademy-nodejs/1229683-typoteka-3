@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
     avatar: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN
     }
   }, {
     sequelize,

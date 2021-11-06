@@ -5,19 +5,20 @@ module.exports = {
     await queryInterface.bulkInsert(`users`, [
       {
         email: `ivanov@example.com`,
-        passwordHash: `5f4dcc3b5aa765d61d8327deb882cf99`,
+        passwordHash: `$2a$10$9QtStHIwDoVw9c57Gof8a.cgBgW38Dh0rjTtAeGjzh.aY.FA02DpK`,
         firstName: `Иван`,
         lastName: `Иванов`,
-        avatar: `avatar1.jpg`,
+        avatar: `avatar-1.png`,
         createdAt: new Date(),
         updatedAt: new Date(),
+        isAdmin: true,
       },
       {
         email: `petrov@example.com`,
-        passwordHash: `5f4dccffffaa765d61d8327deb882cf99`,
+        passwordHash: `$2a$10$uS3UKNcwRZRa1CamrR6ehe2zfGltuiSDZSEXRXdBAjF0g/WpJxj8O`,
         firstName: `Петр`,
         lastName: `Петров`,
-        avatar: `avatar2.jpg`,
+        avatar: `avatar-2.png`,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
