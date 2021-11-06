@@ -3,7 +3,7 @@ ul.notes__list
     li.notes__list-item
       form(action=`/articles/${article.id}` method='POST')
         +formatDate(article.createdAt, 'notes__item-time')
-        a.notes__item-text(href=`/articles/${article.id}`)
+        a.notes__item-text(href=`/articles/edit/${article.id}`)
           | #{article.title}
         button.notes__button.button.button--close-item(type='submit')
           span.visually-hidden Закрыть строку списка

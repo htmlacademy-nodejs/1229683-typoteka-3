@@ -6,9 +6,8 @@ const upload = require(`../middlewares/upload`);
 const auth = require(`../middlewares/auth`);
 
 const mainRouter = new Router();
-const {latestComments} = require(`./mocks.js`);
 
-const ARTICLES_PER_PAGE = 2;
+const ARTICLES_PER_PAGE = 8;
 
 mainRouter.get(`/`, async (req, res) => {
   let {page = 1} = req.query;
@@ -18,14 +17,17 @@ mainRouter.get(`/`, async (req, res) => {
   const limit = ARTICLES_PER_PAGE;
   const offset = (page - 1) * ARTICLES_PER_PAGE;
 
-  const [{count, articles}, categories] = await Promise.all([
+  const [{count, articles}, categories, latestComments] = await Promise.all([
     api.getArticles({isNeedComments: true, limit, offset}),
-    api.getCategories(true)
+    api.getCategories(true),
+    api.getComments(),
   ]);
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
-  res.render(`main`, {news: articles, articles, themesList: categories, page, totalPages, latestComments, user});
+  const hottest = articles.sort((a, b) => b.comments.length - a.comments.length);
+
+  res.render(`main`, {news: hottest.slice(0, 4), articles, categories, page, totalPages, latestComments, user});
 });
 mainRouter.get(`/register`, (req, res) => res.render(`register`));
 mainRouter.get(`/login`, (req, res) => res.render(`login`));

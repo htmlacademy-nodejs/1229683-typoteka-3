@@ -12,5 +12,6 @@ block content
         include partials/last-comments.pug
       include partials/preview.pug
       +pagination(page, totalPages, 2, `?`)
-    .main-page__empty-wrapper
-      p.main-page__empty-text Здесь пока пусто!
+    else
+      .main-page__empty-wrapper
+        p.main-page__empty-text Здесь пока пусто!
