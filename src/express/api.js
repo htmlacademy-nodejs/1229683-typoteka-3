@@ -66,6 +66,10 @@ class API {
     return this._load(`/categories`, {params: {needCount}});
   }
 
+  getComments() {
+    return this._load(`/comments`);
+  }
+
   createArticle(data) {
     return this._load(`/articles`, {
       method: `POST`,

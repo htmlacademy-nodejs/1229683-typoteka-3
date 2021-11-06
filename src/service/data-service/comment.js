@@ -20,6 +20,27 @@ class CommentService {
     });
   }
 
+  async findLatest() {
+    const include = [`article`,
+      {
+        model: this._User,
+        attributes: {
+          exclude: [`passwordHash`]
+        }
+      }];
+
+    const comments = await this._Comment.findAll({
+      include,
+      limit: 4,
+      subQuery: false,
+      order: [
+        [`createdAt`, `DESC`]
+      ]
+    });
+
+    return comments.map((item) => item.get());
+  }
+
   async drop(id) {
     const deletedRows = this._Comment.destroy({
       where: {id}
