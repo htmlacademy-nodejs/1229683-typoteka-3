@@ -2,6 +2,7 @@
 
 const {Router} = require(`express`);
 const {HttpCode} = require(`../../constants`);
+const categoryValidator = require(`../middlewares/category-validator`);
 
 const route = new Router();
 
@@ -12,6 +13,18 @@ module.exports = (app, service) => {
     const {needCount} = req.query;
     const categories = await service.findAll(needCount);
     res.status(HttpCode.OK).json(categories);
+  });
+
+  route.post(`/`, categoryValidator, async (req, res) => {
+    let category;
+    try {
+      category = await service.create(req.body.category);
+    } catch (err) {
+      return res.status(HttpCode.BAD_REQUEST).send(err);
+    }
+
+    return res.status(HttpCode.CREATED).send(category);
+
   });
 
   route.get(`/:id`, async (req, res) => {

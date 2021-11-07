@@ -68,6 +68,13 @@ class API {
     return this._load(`/categories/${id}`, {params: {limit, offset}});
   }
 
+  createCategory(data) {
+    return this._load(`/categories/`, {
+      method: `POST`,
+      data
+    });
+  }
+
   getCategories(needCount) {
     return this._load(`/categories`, {params: {needCount}});
   }

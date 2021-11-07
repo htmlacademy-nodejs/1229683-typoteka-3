@@ -4,6 +4,7 @@ const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
 const upload = require(`../middlewares/upload`);
 const auth = require(`../middlewares/auth`);
+const isAdmin = require(`../middlewares/isAdmin`);
 
 const mainRouter = new Router();
 
@@ -46,10 +47,21 @@ mainRouter.get(`/search`, async (req, res) => {
     });
   }
 });
-mainRouter.get(`/categories`, (req, res) => {
+mainRouter.post(`/categories`, isAdmin, async (req, res) => {
   const {user} = req.session;
+  const {category} = req.body;
 
-  res.render(`articles-by-category`, {user});
+  try {
+    await api.createCategory({category});
+
+    res.redirect(`/my/categories`);
+  } catch (errors) {
+    const categories = await api.getCategories();
+    console.log(errors.response.data);
+
+    res.render(`all-categories`, {errors: errors.response.data, categories, user});
+  }
+
 });
 
 mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
