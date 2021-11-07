@@ -54,9 +54,11 @@ body
         li
           a.pagination__button.button.button--forward(class={'button--disabled': page === totalPages} href=`${prefix}page=${page + 1}`) Вперёд
   mixin insertErrorMessages(messages)
-    if messages
+    if messages && Array.isArray(messages)
       each message in messages
         p.form__error= message
+    else if messages
+      p.server-error= messages
   mixin formatDate(dateString,className)
     time(datetime=dateString, class=className) #{new Date(dateString).toLocaleDateString('ru-RU')}
 

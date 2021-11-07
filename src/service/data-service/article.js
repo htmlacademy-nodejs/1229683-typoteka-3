@@ -16,17 +16,6 @@ class ArticleService {
     return newArticle;
   }
 
-  async drop({userId, offerId}) {
-    const deletedRow = await this._Article.destroy({
-      where: {
-        id: offerId,
-        userId
-      }
-    });
-
-    return !!deletedRow;
-  }
-
   async findAll(isNeedComments) {
     const include = [`categories`,
       {

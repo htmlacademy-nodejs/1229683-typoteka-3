@@ -73,10 +73,9 @@ articlesRouter.get(`/edit/:id`, auth, csrfProtection, async (req, res) => {
 
 articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   const {id} = req.params;
-  const {error} = req.query;
   const {user} = req.session;
   const article = await api.getArticle(id);
-  res.render(`article`, {article, id, error, user, csrfToken: req.csrfToken()});
+  res.render(`article`, {article, id, user, csrfToken: req.csrfToken()});
 });
 
 articlesRouter.post(`/add`, auth, isAdmin, upload.single(`picture`), csrfProtection, async (req, res) => {
@@ -128,7 +127,8 @@ articlesRouter.post(`/:id/comments`, auth, csrfProtection, async (req, res) => {
     await api.createComment(id, {text: comment, userId: user.id});
     res.redirect(`/articles/${id}`);
   } catch (error) {
-    res.redirect(`/articles/${id}/?error=${encodeURIComponent(error.response.data)}`);
+    const article = await api.getArticle(id);
+    res.render(`article`, {article, id, error: error.response.data || null, user, csrfToken: req.csrfToken()});
   }
 });
 
