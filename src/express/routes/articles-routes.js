@@ -100,21 +100,31 @@ articlesRouter.post(`/add`, auth, isAdmin, upload.single(`picture`), csrfProtect
   }
 });
 
-articlesRouter.post(`/edit/:id`, auth, isAdmin, csrfProtection, upload.single(`picture`), async (req, res) => {
+articlesRouter.post(`/edit/:id`, auth, isAdmin, upload.single(`picture`), csrfProtection, async (req, res) => {
   const {body, file} = req;
   const {id} = req.params;
+  const {user} = req.session;
+
   const articleData = {
-    picture: file.filename,
+    userId: user.id,
+    picture: file ? file.filename : ``,
     title: body.title,
     announce: body.announce,
     fullText: body.fullText,
-    categories: body.category,
+    categories: Object.keys(body).filter((it) => body[it] === `on`),
+    date: body.date ? body.date : new Date(),
   };
+
   try {
-    await api.editArtcile(articleData);
-    res.redirect(`/my-articles`);
+    await api.editArtcile(id, articleData);
+    res.redirect(`/my/articles`);
   } catch (error) {
-    res.redirect(`/articles/edit/${id}?error=${encodeURIComponent(error.response.data)}`);
+    const [article, categories] = await Promise.all([
+      api.getArticle(id),
+      api.getCategories(),
+    ]);
+
+    res.render(`edit-article`, {messages: error.response.data || null, categories, article, user, csrfToken: req.csrfToken()});
   }
 });
 
