@@ -70,8 +70,21 @@ class API {
 
   createCategory(data) {
     return this._load(`/categories/`, {
-      method: `POST`,
+      method: HttpMethod.POST,
       data
+    });
+  }
+
+  removeCategory(id) {
+    return this._load(`/categories/${id}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
+  editCategory(id, data) {
+    return this._load(`/categories/${id}`, {
+      method: HttpMethod.PUT,
+      data,
     });
   }
 
@@ -85,7 +98,7 @@ class API {
 
   createArticle(data) {
     return this._load(`/articles`, {
-      method: `POST`,
+      method: HttpMethod.POST,
       data,
     });
   }

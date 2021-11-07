@@ -47,7 +47,7 @@ mainRouter.get(`/search`, async (req, res) => {
     });
   }
 });
-mainRouter.post(`/categories`, isAdmin, async (req, res) => {
+mainRouter.post(`/categories`, auth, isAdmin, async (req, res) => {
   const {user} = req.session;
   const {category} = req.body;
 
@@ -57,11 +57,35 @@ mainRouter.post(`/categories`, isAdmin, async (req, res) => {
     res.redirect(`/my/categories`);
   } catch (errors) {
     const categories = await api.getCategories();
-    console.log(errors.response.data);
 
     res.render(`all-categories`, {errors: errors.response.data, categories, user});
   }
+});
 
+mainRouter.post(`/categories/:id`, auth, isAdmin, async (req, res) => {
+  const {user} = req.session;
+  const {category, action} = req.body;
+  const {id} = req.params;
+  let request;
+
+  switch (action) {
+    case `delete`:
+      request = () => api.removeCategory(id);
+      break;
+    case `edit`:
+      request = () => api.editCategory(id, {category});
+      break;
+    default: return;
+  }
+  try {
+    await request();
+
+    res.redirect(`/my/categories`);
+  } catch (errors) {
+    const categories = await api.getCategories();
+
+    res.render(`all-categories`, {errors: errors.response.data, categories, user});
+  }
 });
 
 mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {

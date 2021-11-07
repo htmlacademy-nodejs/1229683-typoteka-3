@@ -14,17 +14,26 @@ class CategoryService {
     return category;
   }
 
+  async drop(id) {
+    const deletedRows = await this._Category.destroy({
+      where: {id}
+    });
+
+    return !!deletedRows;
+  }
+
   async findAll(needCount) {
     if (needCount) {
       const result = await this._Category.findAll({
         attributes: [
           `id`,
           `title`,
-          [Sequelize.fn(
-              `COUNT`,
-              `*`
-          ),
-          `count`
+          [
+            Sequelize.fn(
+                `COUNT`,
+                Sequelize.col(`categoryId`)
+            ),
+            `count`
           ]
         ],
         group: [Sequelize.col(`category.id`)],
@@ -74,6 +83,14 @@ class CategoryService {
 
 
     return {count, articlesByCategory: rows};
+  }
+
+  async update(id, category) {
+    const [affectedRows] = await this._Category.update({title: category}, {
+      where: {id}
+    });
+    return !!affectedRows;
+
   }
 }
 

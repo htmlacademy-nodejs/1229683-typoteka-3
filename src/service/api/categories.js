@@ -42,4 +42,36 @@ module.exports = (app, service) => {
         articlesByCategory
       });
   });
+
+  route.delete(`/:id`, async (req, res) => {
+    const {id} = req.params;
+
+    const {count} = await service.findPage(id, 0, 0);
+
+    if (count > 0) {
+      return res.status(HttpCode.BAD_REQUEST).send(`Категория не может быть удалена если ей принадлежит хотя бы одна публикация`);
+    }
+
+    const deletedCategory = await service.drop(id);
+
+    if (!deletedCategory) {
+      return res.status(HttpCode.NOT_FOUND).send(`Данной категории не существует`);
+    }
+
+    return res.status(HttpCode.OK).send(deletedCategory);
+
+  });
+
+  route.put(`/:id`, categoryValidator, async (req, res) => {
+    const {id} = req.params;
+    const existCategory = await service.findOne(id);
+
+    if (!existCategory) {
+      return res.status(HttpCode.NOT_FOUND).send(`Данной категории не существует`);
+    }
+
+    const updatedCategory = await service.update(id, req.body.category);
+
+    return res.status(HttpCode.OK).send(updatedCategory);
+  });
 };
