@@ -5,6 +5,7 @@ const categories = require(`../api/categories`);
 const search = require(`../api/search`);
 const article = require(`../api/article`);
 const user = require(`./user`);
+const comments = require(`./comments`);
 
 const {
   CategoryService,
@@ -26,6 +27,7 @@ const app = new Router();
   search(app, new SearchService(sequelize));
   article(app, new ArticleSerice(sequelize), new CommentService(sequelize));
   user(app, new UserService(sequelize));
+  comments(app, new CommentService(sequelize));
 })();
 
 module.exports = app;

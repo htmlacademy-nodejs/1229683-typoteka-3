@@ -7,7 +7,7 @@ class CommentService {
     this._User = sequelize.models.user;
   }
 
-  async findAll(articleId) {
+  async findByArticle(articleId) {
     return this._Comment.findAll({
       where: {articleId},
       include: [{
@@ -18,6 +18,26 @@ class CommentService {
       }],
       raw: true,
     });
+  }
+
+  async findAll() {
+    const include = [`article`,
+      {
+        model: this._User,
+        attributes: {
+          exclude: [`passwordHash`]
+        }
+      }];
+
+    const comments = await this._Comment.findAll({
+      include,
+      subQuery: false,
+      order: [
+        [`createdAt`, `DESC`]
+      ]
+    });
+
+    return comments.map((item) => item.get());
   }
 
   async drop(id) {

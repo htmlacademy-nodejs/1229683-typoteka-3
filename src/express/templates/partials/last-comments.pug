@@ -2,10 +2,13 @@ section.main-page__last.last
   h2.last__name
     | Последние комментарии&nbsp;
     span.last__icon.last__icon--cloud
+  if(!latestComments.length)
+    p.last__empty Здесь пока ничего нет...
+  else
   ul.last__list
     each item in latestComments
       li.last__list-item
-        img.last__list-image(src=item.userAvatar, width='20', height='20', alt='Аватар пользователя')
-        b.last__list-name #{item.userName}
-        a.last__list-link(href='#')
-          | #{item.text}
+        img.last__list-image(src=`img/${item.user.avatar}`, width='20', height='20', alt='Аватар пользователя')
+        b.last__list-name #{item.user.firstName} #{item.user.lastName}
+        a.last__list-link(href=`/articles/${item.article.id}`)
+          | #{item.text.length > 100 ? `${item.text.slice(0,100)}...` : item.text}

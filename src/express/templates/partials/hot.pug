@@ -2,9 +2,12 @@ section.main-page__hot.hot
   h2.hot__name
       | Самое обсуждаемое&nbsp;
       span.hot__icon.hot__icon--fire
-  ul.hot__list
-    each item in news
-      li.hot__list-item
-      a.hot__list-link(href='#')
-          | #{item.title}&nbsp;
-          sup.hot__link-sup=item.comments.length
+  if(!news.length)
+    p.last__empty Здесь пока ничего нет...
+  else
+    ul.hot__list
+      each item in news
+        li.hot__list-item
+        a.hot__list-link(href=`/articles/${item.id}`)
+            | #{item.announce.slice(0,100)}...&nbsp;
+            sup.hot__link-sup=item.comments.length

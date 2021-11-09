@@ -1,7 +1,7 @@
 extends layout
 block variables
     - var admin = true
-    - function formatDate(dateString) { return new Date(dateString).toLocaleString(); };
+    - function formatDateWithTime(dateString) { return new Date(dateString).toLocaleString('ru-RU'); };
 
 
 block content
@@ -12,8 +12,8 @@ block content
         h2.visually-hidden Основное содержание
         .post__wrapper
           .post__head
-            a.post__backwards.button.button--backwards(href='#') Назад
-            time.post__date(datetime=formatDate(article.createdAt)) #{formatDate(article.createdAt)}
+            a.post__backwards.button.button--backwards(href='/') Назад
+            +formatDate(article.createdAt, 'post__date')
             h2.post__title.title.title--main #{article.title}
             ul.post__themes.themes
               each theme in article.categories
@@ -22,31 +22,46 @@ block content
                     | #{theme.title}
                     //- sup 88
                   button.themes__remove-btn(type='button') Удалить категорию
-          .post__picture
-            img(src=`/img/${article.picture}` alt='пейзаж море, скалы, пляж')
+          if(article.picture)
+            .post__picture
+              img(src=`/img/${article.picture}` alt='пейзаж море, скалы, пляж')
           .post__text
             h3 #{article.announce}
             p #{article.fullText}
       .post__wrapper.post__wrapper--comments
         section.post__comments.comments
-          h2.comments__title.title.title--middle Комментарии
-          ul.comments__list
-            each comment in article.comments
-              li.comments__comment
+          if(article.comments.length)
+              h2.comments__title.title.title--middle Комментарии
+              ul.comments__list
+                each comment in article.comments
+                  li.comments__comment
+                    .comments__avatar.avatar
+                      img(src=`/img/${comment.user.avatar}` alt='аватар пользователя')
+                    .comments__text
+                      .comments__head
+                        p #{comment.user.firstName} •
+                        time.comments__date(datetime=formatDateWithTime(comment.createdAt)) #{formatDateWithTime(comment.createdAt)}
+                      p.comments__message #{comment.text}
+          else
+            h2.comments__title.title.title--middle Комментарии отсутствуют
+          if(user)
+            .comments__footer.comments__footer--user
+              form(action=`${id}/comments` method='POST')
+                input(type="hidden" name="_csrf" value=csrfToken)
                 .comments__avatar.avatar
-                  img(src=`/img/${comment.user.avatar}` alt='аватар пользователя')
-                .comments__text
-                  .comments__head
-                    p #{comment.user.firstName} •
-                    time.comments__date(datetime=formatDate(comment.createdAt)) #{formatDate(comment.createdAt)}
-                  p.comments__message #{comment.text}
-          .comments__footer.comments__footer--user
-            form(action=`${id}/comments` method='POST')
-              input(type="hidden" name="_csrf" value=csrfToken)
-              .comments__avatar.avatar
-                img(src='/img/avatar-2.png' alt='аватар пользователя')
-              label
-                textarea(rows='1' name='comment' placeholder='Присоединиться к обсуждению')
-              button.comments__button.button.button--colored(type='submit') Опубликовать
-            +insertErrorMessages(error)
+                  img(src=`/img/${user.avatar}` alt='аватар пользователя')
+                label
+                  textarea(rows='1' name='comment' placeholder='Присоединиться к обсуждению')
+                button.comments__button.button.button--colored(type='submit') Опубликовать
+              +insertErrorMessages(error)
+          else
+            .comments__footer.comments__footer--visitor
+              button.comments__button.button.button--colored(onclick='window.location.href="/login"') Войти
+              .comments__registration
+                p.text.text--signature
+                  b.title.title--small Регистрация
+                  | Чтобы присоединиться к
+                  |         переписке
+                  |         нужно зарегистрироваться
+
 
