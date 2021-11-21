@@ -12,7 +12,7 @@ module.exports = {
             key: `id`, // key in Target model that we're referencing
           },
           onUpdate: `CASCADE`,
-          onDelete: `SET NULL`,
+          onDelete: `CASCADE`,
         }
     )
     .then(() => {

@@ -9,6 +9,7 @@ const sequelize = require(`../service/lib/sequelize`);
 const articlesRouter = require(`./routes/articles-routes`);
 const myRouter = require(`./routes/my-routes`);
 const mainRouter = require(`./routes/main-routes`);
+const {HttpCode} = require(`../constants`);
 
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
@@ -39,6 +40,15 @@ app.use(session({
   saveUninitialized: false,
 }));
 
+app.use((req, res, next) => {
+  if (res.status === HttpCode.INTERNAL_SERVER_ERROR) {
+    res.render(`errors/500`);
+    return;
+  }
+  next();
+});
+
+
 app.use(`/articles`, articlesRouter);
 app.use(`/my`, myRouter);
 app.use(`/`, mainRouter);
@@ -49,6 +59,13 @@ app.use(express.static(path.resolve(__dirname, UPLOAD_DIR)));
 app.set(`views`, path.resolve(__dirname, `templates`));
 
 app.set(`view engine`, `pug`);
+
+app.use((req, res) => {
+  res.status(HttpCode.NOT_FOUND);
+
+  res.render(`errors/404`, {url: req.url});
+  return;
+});
 
 
 app.listen(DEFAULT_PORT);
